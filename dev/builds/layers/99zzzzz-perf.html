@@ -1,0 +1,51 @@
+<style id="ly-perf">
+/* performance: decorative loops only run while they can be seen */
+
+
+.nav-in>a.nv-w:not(:hover):not(:focus-visible)>span>.na-w0{animation:none!important}
+.tv-fly i,.tv-rg-r figure{will-change:transform}
+.tv-fly i::after{display:none!important}.tv-fly i{box-shadow:0 18px 30px -18px rgba(0,0,0,.8)!important}
+.tv-in .tv-fx{display:none!important}
+@media (max-width:700px){.tv-fly i:nth-child(n+9){display:none!important}}
+html.pf-off *{animation-play-state:paused!important}
+</style>
+<script>
+(function(){
+  /* infinite CSS animations that are off screen are paused (sections far above/below the viewport) */
+  function sweep(){var vh=innerHeight;document.getAnimations().forEach(function(a){var e=a.effect&&a.effect.target;if(!e||!e.getBoundingClientRect)return;
+    var t=a.effect.getTiming&&a.effect.getTiming();if(!t||t.iterations!==Infinity)return;if(e.closest&&e.closest('.nav'))return;
+    var r=e.getBoundingClientRect(),on=r.width>0&&r.bottom>-200&&r.top<vh+200;
+    if(!on&&a.playState==='running'){a.pause();a.__pf=1}else if(on&&a.__pf&&a.playState==='paused'){a.play();a.__pf=0}})}
+  var q=0;function k(){if(!q)q=setTimeout(function(){q=0;sweep()},250)}
+  addEventListener('scroll',k,{passive:true});addEventListener('hashchange',function(){setTimeout(sweep,300)});addEventListener('resize',k);
+  if(document.readyState==='complete')setTimeout(sweep,800);else addEventListener('load',function(){setTimeout(sweep,800)});
+  setInterval(sweep,3000);
+})();
+</script>
+<script>
+(function(){/* the animated drip strip under the hero only plays while on screen */
+  function go(){var j=document.querySelectorAll('.je');if(!('IntersectionObserver' in window))return;var io=new IntersectionObserver(function(es){es.forEach(function(e){e.target.style.visibility=e.isIntersecting?'':'hidden'})},{rootMargin:'250px 0px'});
+    j.forEach(function(e){io.observe(e)})}
+  if(document.readyState==='complete')go();else addEventListener('load',go)})();
+</script>
+<style id="ly-side">
+/* works sidebar: exactly one item is lit, flat brand orange */
+html body [data-view] .yt-side button{background-image:none!important}
+html body [data-view] .yt-side button:not([aria-current="true"]):not(:hover){background-color:transparent!important}
+html body [data-view] .yt-side button[aria-current="true"]{background-color:#F7A23E!important;color:#1D1712!important}
+</style>
+<script>
+(function(){/* the two "hof" items (Hall of Fame / all works) share one pane: light only the one that was pressed, and follow the scroll */
+  function go(){var side=document.querySelector('.yt-side');if(!side||side.dataset.one)return;side.dataset.one=1;
+    var hb=[].slice.call(side.querySelectorAll('button[data-pane="hof"]')),arc=document.getElementById('arc'),lock=0;
+    function mark(i){hb.forEach(function(b,k){b.setAttribute('aria-current',String(k===i))})}
+    side.addEventListener('click',function(e){var b=e.target.closest('button[data-pane]');if(!b)return;
+      side.querySelectorAll('button[data-pane]').forEach(function(x){if(x!==b)x.setAttribute('aria-current','false')});
+      setTimeout(function(){side.querySelectorAll('button[data-pane]').forEach(function(x){x.setAttribute('aria-current',String(x===b))});
+        if(b.dataset.jump&&arc){lock=Date.now();arc.scrollIntoView({behavior:'smooth',block:'start'})}},0)});
+    addEventListener('scroll',function(){if(!arc||!hb.length||Date.now()-lock<900)return;var on=hb[0].getAttribute('aria-current')==='true'||hb[1]&&hb[1].getAttribute('aria-current')==='true';if(!on)return;
+      mark(arc.getBoundingClientRect().top<innerHeight*.4?1:0)},{passive:true});
+    side.querySelectorAll('button[data-pane]').forEach(function(x){x.style.removeProperty('background');x.classList.remove('cl2-flat')})}
+  if(document.readyState==='complete')go();else addEventListener('load',go);addEventListener('hashchange',function(){setTimeout(go,200)});
+})();
+</script>

@@ -1,0 +1,169 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+
+/**
+ * Runs the parts of the old page that are not yet React components (see dev/builds/legacy_next.py).
+ * It loads the old styles, puts the old markup in, opens the old page on `view`, then runs the old scripts one by one.
+ * Hash links between views ("#works") become Next.js routes. Each part moved to React is hidden here via `hide`.
+ */
+const BASE = "/hamtercocol/next";
+const ROUTES: Record<string, string> = { home: "/", courses: "/routes/", activity: "/activity/", works: "/works/", about: "/about/" };
+// "shell": a page made only of React content (Hams Route). The legacy part gives it the shared header, footer and loader.
+
+let started = false;
+
+// `current`: on a shell page, the nav link to mark as this page ("nv-c" Hams Route, "nv-w" ผลงาน, …).
+export function LegacyRuntime({ view, hide = [], current = "nv-c" }: { view: keyof typeof ROUTES | "shell"; hide?: string[]; current?: string }) {
+  const shell = view === "shell";
+  const box = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (started || !box.current) return;
+    started = true;
+    const el = box.current;
+    let cancelled = false;
+
+    // the old scripts wait for these events; the page has already loaded, so fire them straight away
+    const patch = (target: Document | Window) => {
+      const orig = target.addEventListener.bind(target);
+      (target as Window).addEventListener = ((type: string, fn: EventListenerOrEventListenerObject, opts?: boolean | AddEventListenerOptions) => {
+        if (type === "DOMContentLoaded" || (type === "load" && target === window)) {
+          setTimeout(() => (typeof fn === "function" ? fn.call(target, new Event(type)) : fn.handleEvent(new Event(type))), 0);
+          return;
+        }
+        return orig(type, fn, opts);
+      }) as typeof window.addEventListener;
+    };
+
+    const load = (tag: "link" | "script", url: string) =>
+      new Promise<void>((done) => {
+        const n = document.createElement(tag);
+        if (tag === "link") { (n as HTMLLinkElement).rel = "stylesheet"; (n as HTMLLinkElement).href = url; }
+        else { (n as HTMLScriptElement).src = url; (n as HTMLScriptElement).async = false; }
+        n.onload = n.onerror = () => done();
+        document.head.appendChild(n);
+      });
+
+    (async () => {
+      const bodyP = fetch(`${BASE}/legacy/body.html`).then((r) => r.text());
+      const manifest: { fonts: string[]; scripts: string[] } = await (await fetch(`${BASE}/legacy/manifest.json`)).json();
+      manifest.fonts.forEach((f) => load("link", f));
+      await new Promise<void>((done) => {
+        const st = document.createElement("style");
+        st.textContent = `@import url("${BASE}/legacy/legacy.css") layer(legacy);`;
+        st.onload = st.onerror = () => done();
+        document.head.appendChild(st);
+        setTimeout(done, 4000);
+      });
+      const html = await bodyP;
+      if (cancelled) return;
+      if (!shell) history.replaceState(history.state, "", location.pathname + location.search + "#" + view);
+      el.innerHTML = html;
+      const nav = el.querySelector("header.nav");
+      if (nav) document.body.insertBefore(nav, document.body.firstChild);
+      const pt = el.querySelector("#pt");
+      if (pt) document.body.insertBefore(pt, nav ? nav.nextSibling : document.body.firstChild);
+      const home = el.querySelector('[data-view="home"]');
+      const mark = () => { document.documentElement.dataset.nxView = home && home.classList.contains("on") ? "home" : "other"; };
+      if (home) new MutationObserver(mark).observe(home, { attributes: true, attributeFilter: ["class", "hidden", "style"] });
+      patch(document);
+      patch(window);
+      // all scripts download at once and still run in order (async = false); waiting for each in turn took ~10 s
+      await Promise.all(manifest.scripts.map((s) => load("script", s.startsWith("http") ? s : `${BASE}/legacy/${s}`)));
+      el.dataset.ready = "1";
+      // arrived from another page's transition: cover is up (see lib/loader.ts); play the wipe and open the page
+      let arrived = "";
+      try { arrived = sessionStorage.getItem("hh-pt") || ""; sessionStorage.removeItem("hh-pt"); } catch {}
+      const ptApi = (window as unknown as { HH_pt?: { build: (v: string) => void; out: () => void } }).HH_pt;
+      if (arrived && ptApi) {
+        ptApi.build(arrived);
+        setTimeout(() => { document.documentElement.classList.remove("hh-pc"); document.getElementById("hhL")?.remove(); }, 380);
+        setTimeout(() => ptApi.out(), 650);
+      } else if ((window as unknown as { __hhSkip?: number }).__hhSkip) { document.documentElement.classList.remove("hh-pc"); document.getElementById("hhL")?.remove(); }
+      if (shell && nav) {
+        const c = nav.querySelector<HTMLAnchorElement>(`a.${current}`);
+        c?.setAttribute("aria-current", "page");
+        nav.querySelectorAll<HTMLAnchorElement>(`a.v:not(.${current})`).forEach((a) => a.removeAttribute("aria-current"));
+      }
+      if (home) setTimeout(() => { const m = () => { document.documentElement.dataset.nxView = home.classList.contains("on") ? "home" : "other"; }; m(); }, 0);
+    })();
+
+    // Moving to another page plays the old page transition first, and the next page finishes it instead of showing the loader.
+    const HOLD: Record<string, number> = { home: 1150, courses: 750, activity: 850, works: 1050, about: 700 };
+    const viewOfPath = (p: string) => {
+      const rest = p.replace(BASE, "").replace(/\/+$/, "/");
+      if (rest === "/" || rest === "") return "home";
+      if (rest.startsWith("/routes")) return "courses";
+      const m = rest.match(/^\/(activity|works|about)\//);
+      return m ? m[1] : "";
+    };
+    const onLeave = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      const a = (e.target as Element).closest?.("header.nav a[href], #drawer a[href], footer a[href]") as HTMLAnchorElement | null;
+      if (!a || a.target === "_blank") return;
+      const raw = a.getAttribute("href")!;
+      let dest = "";
+      if (raw.startsWith("#")) {
+        const v = raw.slice(1).split(/[?&]/)[0];
+        if (!ROUTES[v]) return;
+        if (!shell && v !== "home") return; // the old router swaps views in place on these pages
+        if (!shell && view === "home") return;
+        dest = BASE + ROUTES[v];
+      } else if (raw.startsWith(BASE)) dest = raw;
+      else return;
+      const u = new URL(dest, location.href);
+      if (u.pathname === location.pathname) return;
+      const v = viewOfPath(u.pathname);
+      const pt = (window as unknown as { HH_pt?: { build: (v: string) => void } }).HH_pt;
+      if (!v || !pt || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      try { sessionStorage.setItem("hh-pt", v); } catch {}
+      pt.build(v);
+      setTimeout(() => { location.href = u.href; }, HOLD[v] || 700);
+    };
+    document.addEventListener("click", onLeave, true);
+
+    // Moving between views works as on the original site: the old header and its page transition swap views in place.
+    // Only the home view lives in React, so "#home" from another page loads the home route.
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as Element).closest?.("a[href^='#']") as HTMLAnchorElement | null;
+      if (!a) return;
+      const v = a.getAttribute("href")!.slice(1).split(/[?&]/)[0];
+      if (shell && ROUTES[v]) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        location.href = BASE + ROUTES[v];
+        return;
+      }
+      if (v === "home" && view !== "home") {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        location.href = BASE + "/";
+      }
+    };
+    document.addEventListener("click", onClick, true);
+    // links to the Hams Route pages are ordinary page loads; keep the old router's hands off them
+    const onRoute = (e: MouseEvent) => {
+      const a = (e.target as Element).closest?.(`a[href^='${BASE}/routes']`) as HTMLAnchorElement | null;
+      if (a && !e.defaultPrevented) e.stopImmediatePropagation();
+    };
+    document.addEventListener("click", onRoute, true);
+
+    // keep the address bar on the route of the view that is showing, so a reload opens the same page
+    const onHash = () => {
+      const v = location.hash.slice(1).split(/[?&]/)[0];
+      if (ROUTES[v] && !shell) history.replaceState(history.state, "", BASE + ROUTES[v] + location.search + location.hash);
+    };
+    addEventListener("hashchange", onHash);
+    return () => { cancelled = true; document.removeEventListener("click", onClick, true); document.removeEventListener("click", onRoute, true); document.removeEventListener("click", onLeave, true); removeEventListener("hashchange", onHash); };
+  }, [view, current]);
+
+  return (
+    <>
+      <style>{`.lg-box #hhL{display:none!important}html[data-nx-view=other] .nx-home{display:none!important}${shell ? ".lg-box #main{display:none!important}" : ""}${hide.map((h) => `.lg-box ${h}{display:none!important}`).join("")}`}</style>
+      <div ref={box} className="lg-box" />
+    </>
+  );
+}

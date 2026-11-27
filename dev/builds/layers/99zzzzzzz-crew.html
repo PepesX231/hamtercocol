@@ -1,0 +1,183 @@
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@700&display=swap" rel="stylesheet">
+<style id="ly-crew">
+/* three hamsters, each coming in from a different edge of the hero:
+   left wall (with the pencil that draws the arrow), peeking down from the top, peeking round the right wall */
+.zq-crew{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;border-radius:inherit}
+/* unique class names: an older layer styles plain .c3 with a pink + black drop-shadow */
+.zq-crew .zqc{position:absolute;pointer-events:auto;cursor:pointer;will-change:transform;filter:none!important;box-shadow:none!important;background:none!important}
+.zq-crew .zqc img{display:block;width:100%;height:auto;-webkit-user-drag:none;user-select:none;filter:none!important}
+.zq-crew .zqc img+img{position:absolute;left:0;top:0;opacity:0}
+.zq-crew .zqc.bl img+img{opacity:1}
+.zq-crew .zqc-pen{width:clamp(140px,11vw,170px);left:0;top:17%;transform-origin:0 75%}
+.zq-crew .zqc-hang{width:clamp(110px,10.5vw,158px);right:.6%;top:0;transform-origin:50% 0}
+.zq-crew .zqc-peek{width:clamp(120px,9.6vw,150px);right:0;top:50%;transform-origin:100% 70%}
+.zq-note{position:absolute;left:0;top:0;pointer-events:none;color:#2A221D;font:700 clamp(1.1rem,1.55vw,1.35rem)/1.1 'Mali',var(--display);white-space:nowrap;line-height:1.25;will-change:transform,clip-path;clip-path:inset(0 100% 0 0);filter:url(#zqPencil)}
+.zq-arw{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+/* graphite: a firm line plus a faint looser sketch pass, roughened by a turbulence filter that re-seeds ~10x a second (hand-drawn "line boil") */
+.zq-arw path{fill:none;stroke:#2A221D;stroke-linecap:round;stroke-linejoin:round}
+.zq-arw .pm{stroke-width:2.6;opacity:.92}.zq-arw .ps{stroke-width:1.2;opacity:.34}
+.zq-arw circle{fill:#2A221D}
+/* below ~1180px the note would sit on the headline, so only the hamsters stay */
+@media (max-width:1180px){.zq-note{display:none}.zq-crew .zqc-pen{width:clamp(120px,13vw,160px)}.zq-crew .zqc-hang{display:none}.zq-crew .zqc-peek{width:110px;top:auto;bottom:16%}}
+@media (max-width:900px){.zq-crew .zqc-pen{width:110px;top:auto;bottom:90px}.zq-crew .zqc-hang{display:none}.zq-crew .zqc-peek{width:80px;bottom:80px}}
+/* the hero runs edge to edge: no inset card, so nothing peeking from the sides is cut by a rounded corner */
+html body [data-view="home"] section.zq.zq{margin-left:0!important;margin-right:0!important;border-radius:0!important}
+#zqRes.zq-end::after,#zqRes.zq-top0::before{opacity:0!important}
+#zqRes::after,#zqRes::before{transition:opacity .2s}
+/* owner: only the hand-drawn arrow and the handwriting stay on the left, no hamster and no pencil */
+.zq-crew .zqc-pen{visibility:hidden!important;pointer-events:none!important}
+.zq-arw .zq-pc{display:none!important}
+</style>
+<script>
+(function(){
+  function go(){var zq=document.querySelector('[data-view="home"] .zq');if(!zq||zq.querySelector('.zq-crew'))return;
+    var rm=matchMedia('(prefers-reduced-motion: reduce)').matches,inp=document.getElementById('zqIn'),form=document.getElementById('zqForm')||(inp&&inp.closest('form'));
+    var box=document.createElement('div');box.className='zq-crew';box.setAttribute('aria-hidden','true');
+    /* [image, class, axis it slides on, side (-1 left/top, 1 right/bottom), parallax depth, how far it sits tucked in] */
+    var D=[['crew27-l','zqc-pen','x',-1,8,6],['crew27-hang','zqc-hang','y',-1,6,8],['crew27-peek','zqc-peek','x',1,8,6]];
+    var C=D.map(function(d,i){var e=document.createElement('div');e.className='zqc '+d[1];
+      e.innerHTML='<img src="img/'+d[0]+'.webp" alt="" draggable="false"><img src="img/'+d[0]+'-b.webp" alt="" draggable="false">';box.appendChild(e);
+      return {e:e,ax:d[2],side:d[3],dep:d[4],tuck:d[5],p:d[3]*300,v:0,q:0,vq:0,r:0,vr:0,sq:1,vs:0,ph:i*1.9,hov:false,hovT:0,hide:0,joy:0,pose:0,
+        blinkAt:2+i*1.3+Math.random()*2,blinkEnd:0}});
+    C.forEach(function(c){c.e.style.transform=c.ax==='x'?'translate3d('+c.p+'px,0,0)':'translate3d(0,'+c.p+'px,0)'});
+    var P=C[0],pImg=P.e.querySelector('img');pImg.src='img/crew27-l-e.webp';
+    /* the paw is empty until it takes the pencil, then the art with the pencil in its fingers is shown */
+    function hold(v){var want='img/crew27-l'+(v?'':'-e')+'.webp';if(pImg.getAttribute('src')!==want)pImg.setAttribute('src',want)}
+    var note=document.createElement('div');note.className='zq-note';note.innerHTML='ไม่รู้จะเริ่มตรงไหน?<br>ลองถามดู';
+    var NS='http://www.w3.org/2000/svg',svg=document.createElementNS(NS,'svg');svg.setAttribute('class','zq-arw');
+    svg.innerHTML='<defs><filter id="zqPencil" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="1"/><feDisplacementMap in="SourceGraphic" scale="2.4"/></filter></defs><g filter="url(#zqPencil)"><path class="ps"/><path class="pm"/><path class="pm h1"/><path class="pm h2"/><circle r="0"/></g><g class="zq-pc" style="opacity:0"><g class="zq-pc-in"><image href="img/crew-pencil.webp" x="-274" y="-27" width="280" height="57"/></g></g>';
+    var turb=svg.querySelector('feTurbulence'),pS=svg.querySelector('.ps'),pM=svg.querySelector('.pm'),h1=svg.querySelector('.h1'),h2=svg.querySelector('.h2'),dot=svg.querySelector('circle'),pc=svg.querySelector('.zq-pc'),pcIn=svg.querySelector('.zq-pc-in'),held=false;
+    box.insertBefore(svg,box.firstChild);box.appendChild(note);zq.insertBefore(box,zq.querySelector('.zq-top'));
+    var mx=0,my=0,raf=0,last=0,t0=0,vis=true,focus=false,started=false,nudge=0,vn=0,K=0,HK=0,NK=0,drawing=false,dS=-1,boilT=0,penOut=false;
+    addEventListener('pointermove',function(e){mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5;wake()},{passive:true});
+    function S(p,v,t,k,c,dt){return v+(-k*(p-t)-c*v)*dt}
+    var G=null;function measure(){var zb=zq.getBoundingClientRect();if(!form||!zb.width)return G=null;var fb=form.getBoundingClientRect(),pe=P.e;
+      G={pw:pe.offsetWidth,ph:pe.offsetHeight,pl:pe.offsetLeft,pt:pe.offsetTop,fx:fb.left-zb.left,fy:fb.top-zb.top+fb.height/2,fw:fb.width,fh:fb.height,v:(G&&G.v||0)+1,nw:note.offsetWidth,nh:note.offsetHeight}}
+    addEventListener('resize',function(){C.forEach(function(c){c.h=0});measure();wake()});
+    /* one clean hand-drawn swoop from the pencil tip down and into the search bar. It is pinned to where the pencil rests,
+       so the line is drawn first and the hamster pops out afterwards holding the pencil that made it */
+    var SM=innerWidth<=1180,lastKey='';addEventListener('resize',function(){SM=innerWidth<=1180});
+    function arrow(t){if(!G)return;
+      /* start exactly at the pencil tip: at rest while it is still hidden, then riding the hamster's real transform */
+      /* the pencil rests in the paw with its tip here (measured on the art); the line always starts at that resting point */
+      var lx=G.pw*.884,ly=G.ph*.988-G.ph*.75,X0=-P.tuck,Y0=0,ra=0;
+      var sx=G.pl+X0+lx*Math.cos(ra)-ly*Math.sin(ra),sy=G.pt+G.ph*.75+Y0+lx*Math.sin(ra)+ly*Math.cos(ra),ex=G.fx-38+nudge,ey=G.fy,L=Math.hypot(ex-sx,ey-sy);
+      var c1x=sx+L*.38,c1y=sy+L*.42,c2x=ex-L*.42,c2y=ey+L*.06,N=70,pts=[],sk=[];
+      /* nothing changed since the last frame: skip all path work (the pencil filter is costly to repaint) */
+      var key=[K.toFixed(3),HK.toFixed(3),NK.toFixed(3),nudge.toFixed(1),SM,G.v,held,drawing?Math.round((t-dS)*60):-1].join();if(key===lastKey)return;lastKey=key;
+      /* small screens: the pencil circles the search bar by hand instead of drawing a long arrow across the page */
+      if(SM)return loop(t,sx,sy);
+      for(var i=0;i<=N;i++){var u=i/N,w=1-u,x=w*w*w*sx+3*w*w*u*c1x+3*w*u*u*c2x+u*u*u*ex,y=w*w*w*sy+3*w*w*u*c1y+3*w*u*u*c2y+u*u*u*ey;
+        pts.push([x,y+Math.sin(u*5.3+1)*1.1]);sk.push([x+1.8+Math.sin(u*8)*1.6,y-1.6+Math.cos(u*6)*1.8])}
+      function poly(A,k){if(k<=0)return '';var n=Math.max(1,Math.round(k*N)),d='M'+A[0][0].toFixed(1)+' '+A[0][1].toFixed(1);for(var j=1;j<=n;j++)d+='L'+A[j][0].toFixed(1)+' '+A[j][1].toFixed(1);return d}
+      /* line first, then the arrowhead, then the handwriting */
+      function polyR(A,k){if(k<=0)return '';var n=Math.max(1,Math.round(k*N)),d='M'+A[N][0].toFixed(1)+' '+A[N][1].toFixed(1);for(var j=N-1;j>=N-n;j--)d+='L'+A[j][0].toFixed(1)+' '+A[j][1].toFixed(1);return d}
+      pM.setAttribute('d',poly(pts,K));pS.setAttribute('d',poly(sk,Math.max(0,K*1.1-.1)));
+      /* graphite tip riding the front of the line while it is drawn */
+      var f=pts[Math.max(0,Math.min(N,N-Math.round(K*N)))];dot.setAttribute('cx',f[0].toFixed(1));dot.setAttribute('cy',f[1].toFixed(1));dot.setAttribute('r',0);
+      var e=pts[N],q=pts[N-5],ang=Math.atan2(e[1]-q[1],e[0]-q[0]);
+      function head(da,len,k){if(k<=0)return '';var x=e[0]-len*Math.cos(ang+da),y=e[1]-len*Math.sin(ang+da);return 'M'+e[0].toFixed(1)+' '+e[1].toFixed(1)+'L'+(e[0]+(x-e[0])*k).toFixed(1)+' '+(e[1]+(y-e[1])*k).toFixed(1)}
+      h1.setAttribute('d',head(-.5,15,Math.min(1,HK*2)));h2.setAttribute('d',head(.62,13,Math.max(0,HK*2-1)));
+      /* hand-lettered note above the start of the swoop, written left to right after the hamster appears */
+      /* centred over the middle of the curve, lifted just clear of the highest bit of line under it */
+      /* owner sketch: two short lines sitting above the curve, just right of where it starts to bend */
+      if(!G.nh||G.nw<40){G.nw=note.offsetWidth;G.nh=note.offsetHeight}
+      var a3=pts[Math.round(N*.3)],tx=a3[0]+10,top=1e9;for(var q2=0;q2<=N;q2++){var P2=pts[q2];if(P2[0]>=tx-4&&P2[0]<=tx+G.nw+4)top=Math.min(top,P2[1])}var ty=top-G.nh-8;
+      note.style.transform='translate('+tx.toFixed(1)+'px,'+ty.toFixed(1)+'px) rotate(-3deg)';
+      note.style.clipPath='inset(-20% '+((1-NK)*100).toFixed(1)+'% -20% '+(NK>0?'-4%':'0')+')';note.style.visibility=NK>0?'visible':'hidden'
+      /* the pencil: it draws the line on its own, flies back to the wall, and the hamster pops out and takes it */
+      var td=t-dS,PA=42.7,px,py,pa=PA,op=1,scale=G.pw/420;
+      var hx=function(da,len){return [e[0]-len*Math.cos(ang+da),e[1]-len*Math.sin(ang+da)]};
+      if(held){op=0;var r2=P.r*Math.PI/180,X=P.X,Y=P.Y;px=G.pl+X+lx*Math.cos(r2)-ly*Math.sin(r2);py=G.pt+G.ph*.75+Y+lx*Math.sin(r2)+ly*Math.cos(r2);pa=PA+P.r}
+      else if(!drawing){op=0;px=sx;py=sy}
+      else if(td>=.3&&td<1.2){px=f[0];py=f[1];pa=PA-6+Math.sin(td*30)*4}
+      else if(td<.3){var k=td/.3,a1=hx(-.5,15),a2=hx(.62,13);if(k<.5){var u=k*2;px=e[0]+(a1[0]-e[0])*u;py=e[1]+(a1[1]-e[1])*u}else{var u2=(k-.5)*2;px=e[0]+(a2[0]-e[0])*u2;py=e[1]+(a2[1]-e[1])*u2};pa=PA-6}
+      else{var k3=Math.min(1,(td-1.2)/.2);px=sx;py=sy;pa=PA-6+k3*6}
+      if(td<.12&&drawing&&!held)op=td/.12;
+      pc.style.opacity=op;pc.setAttribute('transform','translate('+px.toFixed(1)+' '+py.toFixed(1)+') rotate('+pa.toFixed(2)+') scale('+scale.toFixed(3)+')')}
+    function loop(t,sx,sy){var N=80,cx=G.fx+G.fw/2,cy=G.fy,rx=Math.min(G.fw/2+9,G.fx+G.fw/2-6),ry=G.fh/2+11,th0=Math.PI*.78,pts=[],sk=[];
+      for(var i=0;i<=N;i++){var u=i/N,th=th0+u*Math.PI*2.18,w=1+Math.sin(u*7.3)*.012+u*.035;pts.push([cx+Math.cos(th)*rx*w,cy+Math.sin(th)*ry*(w+u*.04)]);sk.push([cx+Math.cos(th+.03)*(rx*w+2.5),cy+Math.sin(th+.03)*(ry*w+2)])}
+      function poly(A,k){if(k<=0)return '';var n=Math.max(1,Math.round(k*N)),d='M'+A[0][0].toFixed(1)+' '+A[0][1].toFixed(1);for(var j=1;j<=n;j++)d+='L'+A[j][0].toFixed(1)+' '+A[j][1].toFixed(1);return d}
+      pM.setAttribute('d',poly(pts,K));pS.setAttribute('d',poly(sk,Math.max(0,K*1.1-.1)));h1.setAttribute('d','');h2.setAttribute('d','');dot.setAttribute('r',0);
+      var tx=G.fx+G.fw/2-G.nw/2,ty=G.fy-ry-G.nh-10;note.style.transform='translate('+tx.toFixed(1)+'px,'+ty.toFixed(1)+'px) rotate(-4deg)';note.style.clipPath='inset(-20% '+((1-NK)*100).toFixed(1)+'% -20% '+(NK>0?'-4%':'0')+')';note.style.visibility=NK>0?'visible':'hidden';
+      var td=t-dS,PA=42.7,px,py,pa=PA,op=1,scale=G.pw/420,f=pts[Math.max(0,Math.min(N,Math.round(K*N)))],e=pts[N];
+      if(held){op=0;px=sx;py=sy}else if(!drawing){op=0;px=sx;py=sy}
+      else if(td<.3){px=pts[0][0];py=pts[0][1];op=td/.3}
+      else if(td<1.2){px=f[0];py=f[1];pa=PA-6+Math.sin(td*30)*4}
+      /* after the loop the pencil hops down to where the hamster's paw will be */
+      else{var k=Math.min(1,(td-1.2)/.42),ee=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2,mx2=(e[0]+sx)/2,my2=Math.min(e[1],sy)-60,w2=1-ee;px=w2*w2*e[0]+2*w2*ee*mx2+ee*ee*sx;py=w2*w2*e[1]+2*w2*ee*my2+ee*ee*sy;pa=PA-6+ee*6+Math.sin(ee*Math.PI)*-120}
+      pc.style.opacity=op;pc.setAttribute('transform','translate('+px.toFixed(1)+' '+py.toFixed(1)+') rotate('+pa.toFixed(2)+') scale('+scale.toFixed(3)+')')}
+    function frame(now){raf=0;var dt=Math.min(.033,(now-last)/1000);last=now;var t=(now-t0)/1000,busy=false;
+      /* sequence: line (0.9s) -> two head strokes -> pencil hamster pops out -> note is written; redrawn every ~10s */
+      var away=focus||zq.classList.contains('ask'),want=started&&t>.6&&!away?1:0;
+      /* while the visitor is typing or reading results everyone ducks out of the way; the pencil one comes back after the line is redrawn */
+      if(!want&&K<.02){penOut=false;held=false}
+      if(want&&!drawing&&K<.001){drawing=true;dS=t}
+      if(!want)drawing=false;
+      if(drawing){var e1=Math.max(0,Math.min(1,(t-dS)/.9));K=e1<.5?2*e1*e1:1-Math.pow(-2*e1+2,2)/2;HK=Math.max(0,Math.min(1,(t-dS-.9)/.3));
+        if(t-dS>(SM?1.62:1.3))penOut=true;if(penOut&&!held&&Math.abs(P.X+P.tuck)<2&&Math.abs(P.v)<40)held=true;NK=Math.max(NK,Math.min(1,(t-dS-1.1)/.7))}
+      else{var sp=dt*(want?2.6:5);HK=Math.max(0,HK-sp*2.2);if(HK<=0)K=Math.max(0,K-sp);if(!want)NK=Math.max(0,NK-sp*1.3)}
+      if(rm&&started&&want){K=HK=NK=1;penOut=true;held=true}
+      /* no arrow on small screens: the hamster comes out already holding its pencil */
+      hold(held);
+      if(!rm&&want&&(K<1||HK<1||NK<1)&&t-boilT>.1){boilT=t;turb.setAttribute('seed',1+Math.floor(Math.random()*6))}
+      var tap=0&&drawing&&!rm&&HK>=1?Math.pow(Math.max(0,Math.sin(t*3.2)),2)*7*((Math.floor(t*3.2/Math.PI)%3)<2?1:0):0;
+      vn=S(nudge,vn,tap,300,16,dt);nudge+=vn*dt;
+      C.forEach(function(c,i){var s=c.side,inT=started&&!away&&(c===P?penOut:t>1.2+i*.35);
+        /* how far out of its edge: 0 = flush, negative = tucked further in */
+        var out=inT?-c.tuck:-300;
+        if(inT&&!rm){out+=Math.sin(t*1.2+c.ph)*1.5;if(c.hov)out+=10;out-=Math.min(1,c.hide)*300;}
+        out=Math.min(0,out);
+        var tp=-s*out,tq=0;
+        /* rotation: the pencil one leans with the pointer, the hanging one swings like a pendulum, the peeking one tilts its head */
+        var look=0;if(inT&&!rm){
+          if(c.ax==='x')look=(Math.max(-1,Math.min(1,my*2.2))*1.5+(c.hov?3:0))*-s;
+          else if(s<0)look=Math.sin(t*1.3+c.ph)*1.2+(c.hov?Math.sin(t*5)*2:0);
+          else look=Math.max(-1,Math.min(1,mx*2))*5+(c.hov?Math.sin(t*12)*3*Math.exp(-c.hovT*2.5):0)+(c.pose>0?-6*Math.min(1,c.pose*3):0)}
+        if(c.hov)c.hovT+=dt;if(c.pose>0)c.pose-=dt;
+        c.v=S(c.p,c.v,tp,110,12,dt);c.vq=S(c.q,c.vq,tq,90,12,dt);c.vr=S(c.r,c.vr,look,70,9,dt);c.vs=S(c.sq,c.vs,inT&&!rm?1+Math.sin(t*2.4+c.ph)*.012:1,240,12,dt);
+        c.p+=c.v*dt;c.q+=c.vq*dt;c.r+=c.vr*dt;c.sq+=c.vs*dt;
+        if(Math.abs(c.v)+Math.abs(c.vr)>.3)busy=true;
+        /* keep the straight cut on its edge: clamp, and tuck in by however much the tilt swings the cut corner out */
+        var e=c.e,h=c.h||(c.h=c.ax==='x'?e.offsetHeight:e.offsetWidth*.5)||200,pp=s*Math.max(s*c.p,0)+s*Math.abs(c.r)*h*(c.ax==='x'?.0152:.0175);
+        var X=c.X=c.ax==='x'?pp:c.q,Y=c.Y=c.ax==='x'?c.q:pp;
+        e.style.transform='translate3d('+X.toFixed(2)+'px,'+Y.toFixed(2)+'px,0) rotate('+c.r.toFixed(2)+'deg) scale('+(2-c.sq).toFixed(4)+','+c.sq.toFixed(4)+')';
+        c.hide=Math.max(0,c.hide-dt*1.6);c.joy=Math.max(0,c.joy-dt*1.4);
+        if(!rm&&!(c===P&&!held)){if(t>c.blinkAt){e.classList.add('bl');c.blinkEnd=t+(focus?.45:.12);c.blinkAt=t+2.4+Math.random()*3.2+(Math.random()<.25?-2.2:0)}
+          if(c.blinkEnd&&t>c.blinkEnd){e.classList.remove('bl');c.blinkEnd=0}}});
+      arrow(t);
+      if(vis&&!document.hidden&&(!rm||busy)||busy)raf=requestAnimationFrame(frame)}
+    /* calm on purpose: no random pops; they only react to the visitor (hover, click, the search bar) */
+    function wake(){if(!raf&&vis){last=performance.now();raf=requestAnimationFrame(frame)}}
+    function start(){started=true;t0=performance.now();last=t0;measure();wake();setTimeout(measure,600)}
+    if(document.getElementById('hhL'))addEventListener('hh:loaded',start,{once:true});else start();
+    if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){measure();wake()});
+    if('IntersectionObserver' in window)new IntersectionObserver(function(es){vis=es[0].isIntersecting;if(vis)measure();wake()}).observe(zq);
+    /* results panel: the hero grows to hold it, so the orange liquid wrapped round it is not cut off at the hero's bottom edge */
+    /* the hero's content is centred, so growing it by 2x the overflow moves the panel down by 1x; measured once per open to avoid a feedback loop */
+    var res=document.getElementById('zqRes'),sw=res&&res.offsetParent,fitT=0;
+    /* the panel is 80px wider than the bar on both sides, measured from the bar itself (its wrapper is narrower than the bar) */
+    function place(){if(!res||!form)return;/* never wider than the screen minus a 16px gutter on each side (phones) */
+      var op=res.offsetParent||sw||zq;if(!op)return;var f=form.getBoundingClientRect(),p=op.getBoundingClientRect(),W=Math.min(f.width+160,innerWidth-32),L=f.left+f.width/2-W/2;res.style.setProperty('left',(L-p.left)+'px','important');res.style.setProperty('right','auto','important');res.style.setProperty('width',W+'px','important');res.style.setProperty('box-sizing','border-box','important');
+      /* short answers are shown whole instead of being cut a few px short with a fade over the last row */
+      var full=res.scrollHeight;if(full<=Math.max(560,innerHeight*.7))res.style.setProperty('max-height',(full+2)+'px','important')}
+    /* the hero's content is centred, so growing it by 2x the overflow moves the panel down by 1x; repeated until it fits */
+    function fit(){if(!res)return;if(!zq.classList.contains('ask')){if(zq.style.minHeight){zq.style.minHeight='';setTimeout(function(){dispatchEvent(new Event('resize'))},30)}return}place();var z=zq.getBoundingClientRect(),r=res.getBoundingClientRect();if(!r.height)return;
+      var o=r.bottom-z.bottom+120;if(o>2||(o<-60&&zq.style.minHeight)){zq.style.minHeight=Math.max(0,Math.ceil(z.height+o))+'px';/* the hero's canvases size themselves on resize: tell them, or the grown strip stays blank/black */setTimeout(function(){dispatchEvent(new Event('resize'))},30);clearTimeout(fitT);fitT=setTimeout(fit,120)}}
+    function refit(){clearTimeout(fitT);fitT=setTimeout(fit,zq.classList.contains('ask')?350:0)}
+    /* fade hints at the panel's top and bottom only while there is more to scroll that way */
+    function ends(){if(!res)return;res.classList.toggle('zq-top0',res.scrollTop<4);res.classList.toggle('zq-end',res.scrollTop+res.clientHeight>=res.scrollHeight-40)}
+    if(res){new MutationObserver(refit).observe(zq,{attributes:true,attributeFilter:['class']});if(window.ResizeObserver)new ResizeObserver(function(){refit();ends()}).observe(res);
+      res.addEventListener('scroll',ends,{passive:true});new MutationObserver(ends).observe(res,{childList:true,subtree:true});addEventListener('resize',function(){place();refit()})}
+    C.forEach(function(c){
+      c.e.addEventListener('pointerenter',function(){c.hov=true;c.hovT=0;c.sq=.93;wake()});
+      c.e.addEventListener('pointerleave',function(){c.hov=false;wake()});
+      c.e.addEventListener('pointerdown',function(){c.sq=.86;c.vs=0;c.hide=1.1;wake()});
+      c.e.addEventListener('click',function(){if(inp)inp.focus({preventScroll:true})})});
+    if(inp){inp.addEventListener('focus',function(){focus=true;C.forEach(function(c,i){setTimeout(function(){c.joy=1;c.sq=.92;c.e.classList.add('bl');c.blinkEnd=(performance.now()-t0)/1000+.5;wake()},i*90)})});
+      inp.addEventListener('blur',function(){focus=false;wake()});
+      /* every keystroke makes one of them wobble */
+      var ki=0;inp.addEventListener('input',function(){var c=C[ki++%C.length];c.vr+=(ki%2?1:-1)*70;c.sq=.94;c.joy=Math.min(1,c.joy+.4);wake()})}}
+  if(document.readyState==='complete')go();else addEventListener('load',go);
+})();
+</script>

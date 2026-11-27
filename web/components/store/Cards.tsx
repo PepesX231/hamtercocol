@@ -1,0 +1,72 @@
+import { DISCIPLINES, LINK, art, baht, disc, route, tile, type Package, type Program, type Route } from "@/lib/routes";
+
+const Plus = () => (
+  <span className="st-plus" aria-hidden>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="square"><path d="M9 5l7 7-7 7" /></svg>
+  </span>
+);
+
+/** A package, Apple-shelf style: one block of colour; the picture grows out of the same colour below the words. */
+export function PackageCard({ p }: { p: Package }) {
+  return (
+    <a className="st-pk" href={LINK.pkg(p.id)} style={{ background: p.bg }} aria-label={`${p.name} ${baht(p.price)}`}>
+      <span className="st-pk-t">
+        <b>{p.name}</b>
+        <em>{p.hook}</em>
+        <i>{baht(p.price)}</i>
+      </span>
+      <img src={art(p.img)} alt="" decoding="async" />
+      <Plus />
+    </a>
+  );
+}
+
+/** A single Route: its own white box, the piece on top, name and price under it. */
+export function RouteCard({ r, showDisc = false }: { r: Route; showDisc?: boolean }) {
+  return (
+    <a className="st-card" href={LINK.route(r.id)} aria-label={`${r.name} ${baht(r.price)}`}>
+      <span className="st-card-t">
+        {showDisc && <small>{disc(r.d).name}</small>}
+        <b>{r.name}</b>
+        <span className="st-price">{baht(r.price)}</span>
+      </span>
+      <img src={tile(r.tile)} alt="" decoding="async" />
+      <Plus />
+    </a>
+  );
+}
+
+export function ProgramCard({ p }: { p: Program }) {
+  return (
+    <a className="st-prog" href={p.href} target="_blank" rel="noopener">
+      <img src={p.img} alt="" decoding="async" />
+      <div>
+        <small>สำหรับ {p.forWho}</small>
+        <b>{p.name}</b>
+        <p>{p.line}</p>
+        <dl>
+          {p.facts.map(([a, b]) => (
+            <div key={a}><dt>{a}</dt><dd>{b}</dd></div>
+          ))}
+        </dl>
+        <p style={{ fontSize: 13, marginTop: 14, color: "rgba(255,255,255,.7)" }}>{p.status}</p>
+      </div>
+    </a>
+  );
+}
+
+/** Apple Store's product icon row, with the clay pieces: one per kind of skill. */
+export function DisciplineIcons({ current }: { current?: string }) {
+  return (
+    <nav className="st-icons" aria-label="หมวดของ Hams Route">
+      {DISCIPLINES.map((d) => (
+        <a key={d.id} className="st-ic" href={LINK.disc(d.id)} aria-current={current === d.id ? "page" : undefined}>
+          <img src={tile(d.tile)} alt="" />
+          <b>{d.name}</b>
+        </a>
+      ))}
+    </nav>
+  );
+}
+
+export const routeList = (ids: string[]) => ids.map(route);

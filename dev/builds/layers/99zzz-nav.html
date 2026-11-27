@@ -1,0 +1,160 @@
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@600&display=swap" rel="stylesheet">
+<style id="ly-navart">
+/* ===== nav: each link gets its own hover, drawn from what is behind it ===== */
+.nav-in>a.nv-c,.nav-in>a.nv-w,.nav-in>a.nv-b{position:relative}
+.nav-in>a.nv-c>span,.nav-in>a.nv-w>span,.nav-in>a.nv-b>span{position:relative;display:inline-block}
+.na-x{position:absolute;pointer-events:none;white-space:nowrap}
+
+/* คอร์ส = you learn to write code: the word gets wrapped in a tag, a caret blinks */
+.na-c{top:50%;font:600 .86em/1 'IBM Plex Mono',ui-monospace,monospace;color:#B85F14;opacity:0;transition:transform .35s cubic-bezier(.23,1,.32,1),opacity .2s}
+.na-c.l{right:100%;transform:translate(6px,-52%);margin-right:2px}
+.na-c.r{left:100%;transform:translate(-6px,-52%);margin-left:2px}
+.na-c.r i{display:inline-block;width:.5em;height:2px;background:currentColor;margin-left:2px;vertical-align:-1px;opacity:0}
+.nav-in>a.nv-c:hover .na-c,.nav-in>a.nv-c:focus-visible .na-c{opacity:1;transform:translate(0,-52%)}
+.nav-in>a.nv-c:hover .na-c.r i,.nav-in>a.nv-c:focus-visible .na-c.r i{animation:naBlink 1s steps(1) .3s infinite}
+.nav-in>a.nv-c:hover>span,.nav-in>a.nv-c:focus-visible>span{color:#1D1712;font-weight:600}
+@keyframes naBlink{0%{opacity:1}50%{opacity:0}}
+
+/* ผลงาน = the Hall of Fame: a soft gold aurora rises behind the word, the word turns to gold */
+.nav-in>a.nv-w>span{z-index:0}
+.nav-in>a.nv-w>span>.na-w0{display:inline-block;position:relative;transition:color .25s}
+/* a gold aurora flows all the way around the word */
+@property --naA{syntax:'<angle>';inherits:false;initial-value:0deg}
+.na-w{left:-14px;right:-14px;top:-7px;bottom:-7px;z-index:-1;opacity:0;transition:opacity .35s;pointer-events:none}
+.na-w::before{content:"";position:absolute;inset:-7px -9px;border-radius:999px;filter:blur(11px) saturate(1.4);
+  background:conic-gradient(from var(--naA),#FFC94A,#FFF3C8,#F59E2A,#FFE38C,#E9A13A,#FFF6DA,#FFC94A);animation:naAur 3.2s linear infinite}
+.na-w::after{content:"";position:absolute;inset:0;border-radius:999px;background:conic-gradient(from var(--naA),#FFC94A,#FFF3C8,#F59E2A,#FFE38C,#E9A13A,#FFF6DA,#FFC94A);animation:naAur 3.2s linear infinite;
+  -webkit-mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);padding:1.5px;
+  box-shadow:inset 0 0 0 100px rgba(255,251,240,.92)}
+.na-w i{display:none}
+@keyframes naAur{to{--naA:360deg}}
+.nav-in>a.nv-w:hover .na-w,.nav-in>a.nv-w:focus-visible .na-w{opacity:1}
+.na-w b{position:absolute;inset:0;border-radius:999px;background:rgba(255,251,240,.94)}
+.nav-in>a.nv-w:hover>span>.na-w0,.nav-in>a.nv-w:focus-visible>span>.na-w0{color:transparent;font-weight:700;
+  background:linear-gradient(100deg,#7A4A08 0%,#9A6410 30%,#E0A030 45%,#9A6410 60%,#7A4A08 100%) 0 0/250% 100%;-webkit-background-clip:text;background-clip:text;animation:naFame 1.8s cubic-bezier(.4,0,.2,1) infinite;filter:drop-shadow(0 0 5px rgba(255,200,80,.7))}
+@keyframes naFame{0%{background-position:100% 0}60%,100%{background-position:0 0}}
+
+/* เกี่ยวกับเรา = "this is us": a marker loop is drawn around the word by hand, with a hamster paw print at the end */
+.nav-in>a.nv-b>span{z-index:0}
+.na-b{left:-14px;right:-14px;top:-9px;bottom:-9px}
+.na-b svg{width:100%;height:100%;overflow:visible}
+.na-b path{opacity:0;fill:none;stroke:#E8833A;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .55s cubic-bezier(.6,0,.3,1)}
+.na-b .h{fill:#E8833A;opacity:0;transform:scale(.3) rotate(-20deg);transform-origin:center;transform-box:fill-box;transition:opacity .2s .45s,transform .35s cubic-bezier(.3,1.8,.5,1) .45s}
+.nav-in>a.nv-b:hover .na-b path,.nav-in>a.nv-b:focus-visible .na-b path{stroke-dashoffset:0;opacity:1}
+.nav-in>a.nv-b:hover .na-b .h,.nav-in>a.nv-b:focus-visible .na-b .h{opacity:1;transform:rotate(15deg)}
+.nav-in>a.nv-b:hover>span,.nav-in>a.nv-b:focus-visible>span{color:#1D1712}
+@media (prefers-reduced-motion:reduce){.na-x,.nav-in>a.nv-w>span>.na-w0{transition:none!important;animation:none!important}.nav-in>a.nv-w:hover>span>.na-w0{animation:none!important}.na-b path{transition:none!important}.na-w i{animation:none!important}}
+
+/* ===== seniors caption: a quiet plaque instead of a line of dots ===== */
+html body [data-view="home"] .mc .mc2-nav{display:grid!important;grid-template-columns:52px minmax(0,1fr) 52px;align-items:center;gap:clamp(14px,3vw,40px);max-width:760px;margin:6px auto 0!important}
+html body [data-view="home"] .mc .mc2-nav>button{all:unset;cursor:pointer;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;color:#1D1712;background:transparent!important;
+  box-shadow:inset 0 0 0 1px rgba(29,23,18,.22)!important;transition:background .25s,color .25s,box-shadow .25s,transform .15s}
+html body [data-view="home"] .mc .mc2-nav>button svg{width:18px;height:18px;stroke-width:1.6;transition:transform .3s cubic-bezier(.23,1,.32,1)}
+html body [data-view="home"] .mc .mc2-nav>button:hover{background:#1D1712!important;color:#FFF6E8;box-shadow:inset 0 0 0 1px #1D1712!important}
+html body [data-view="home"] .mc .mc2-nav>button:first-child:hover svg{transform:translateX(-2px)}
+html body [data-view="home"] .mc .mc2-nav>button:last-child:hover svg{transform:translateX(2px)}
+html body [data-view="home"] .mc .mc2-nav>button:active{transform:scale(.95)}
+html body [data-view="home"] .mc .mc2-nav>button:focus-visible{outline:2px solid #B85F14;outline-offset:3px}
+html body [data-view="home"] .mc .mc-cap #mcC{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+html body [data-view="home"] .mc .mc-cap{position:relative;text-align:center}
+.mc3{display:grid;justify-items:center;gap:6px;min-height:92px;align-content:center}
+.mc3>*{display:block;transition:opacity .45s,transform .55s cubic-bezier(.23,1,.32,1),filter .45s}
+.mc3.out>*{opacity:0;transform:translateY(8px);filter:blur(3px)}
+.mc3.out>*:nth-child(2){transition-delay:.04s}.mc3.out>*:nth-child(3){transition-delay:.08s}
+.mc3>:nth-child(2){transition-delay:.06s}.mc3>:nth-child(3){transition-delay:.12s}
+.mc3-n{font:800 clamp(1.7rem,2.6vw,2.2rem)/1.1 var(--display);color:#1D1712;letter-spacing:-.01em}
+.mc3-u{display:flex;align-items:center;gap:12px;font-size:.98rem;color:rgba(29,23,18,.6)}
+.mc3-u b{font-weight:700;color:#1D1712}
+.mc3-u i{width:1px;height:13px;background:rgba(29,23,18,.25)}
+.mc3-c{display:flex!important;align-items:center;gap:12px;font:700 .78rem/1 var(--display);letter-spacing:.06em;color:#B85F14;margin-top:4px}
+.mc3-c::before,.mc3-c::after{content:"";width:22px;height:1px;background:rgba(184,95,20,.45)}
+html body [data-view="home"] .mc .lk{display:inline-flex!important;align-items:center;gap:10px;margin-top:26px!important;padding:15px 30px!important;border-radius:999px!important;
+  background:linear-gradient(#B85F14,#B85F14) left/0% 100% no-repeat,#1D1712!important;color:#FFF6E8!important;box-shadow:0 14px 30px -18px rgba(29,23,18,.7)!important;
+  font-weight:700!important;letter-spacing:.01em;transition:background-size .45s cubic-bezier(.23,1,.32,1),transform .15s!important;text-decoration:none}
+html body [data-view="home"] .mc .lk:hover{background-size:100% 100%,auto!important}
+html body [data-view="home"] .mc .lk:active{transform:scale(.97)}
+@media (max-width:640px){html body [data-view="home"] .mc .mc2-nav{grid-template-columns:44px minmax(0,1fr) 44px;gap:10px}html body [data-view="home"] .mc .mc2-nav>button{width:44px;height:44px}.mc3-n{font-size:1.5rem}.mc3-u{font-size:.86rem;gap:8px;flex-wrap:wrap;justify-content:center}}
+@media (prefers-reduced-motion:reduce){.mc3>*{transition:none!important}}
+@media (hover:none){html body [data-view="home"] .mc .mc2-nav>button:hover{background:transparent!important;color:#1D1712;box-shadow:inset 0 0 0 1px rgba(29,23,18,.22)!important}html body [data-view="home"] .mc .lk:hover{background-size:0% 100%,auto!important}}
+</style>
+<script>
+(function(){
+  function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.textContent=h;return e}
+  function nav(){
+    var c=document.querySelector('.nav-in>a.nv-c>span');
+    if(c&&!c.querySelector('.na-x')){var l=el('span','na-x na-c l','<'),r=el('span','na-x na-c r','/>');r.appendChild(el('i'));[l,r].forEach(function(x){x.setAttribute('aria-hidden','true')});c.appendChild(l);c.appendChild(r)}
+    var w=document.querySelector('.nav-in>a.nv-w>span');
+    if(w&&!w.querySelector('.na-x')){var t=w.textContent;w.textContent='';w.appendChild(el('span','na-w0',t));var p=el('span','na-x na-w');p.setAttribute('aria-hidden','true');p.innerHTML='<b></b>';w.appendChild(p)}
+    var b=document.querySelector('.nav-in>a.nv-b>span');
+    if(b&&!b.querySelector('.na-x')){var d=el('span','na-x na-b');d.setAttribute('aria-hidden','true');d.innerHTML='<svg viewBox="0 0 120 40" preserveAspectRatio="none"><path pathLength="1" d="M70 4C40 1 8 6 5 19c-3 14 40 19 72 17 30-2 42-11 38-21C111 4 86 1 56 4"/><g class="h"><ellipse cx="117" cy="5.5" rx="3.6" ry="3"/><circle cx="111.6" cy="1.2" r="1.5"/><circle cx="115.3" cy="-1.2" r="1.5"/><circle cx="119.4" cy="-1" r="1.5"/><circle cx="122.6" cy="1.6" r="1.5"/></g></svg>';b.appendChild(d)}}
+  /* seniors caption */
+  var last='';
+  function cap(){var p=document.getElementById('mcC');if(!p)return;var box=p.parentNode,m=box.querySelector('.mc3');
+    if(!m){m=el('div','mc3');m.setAttribute('aria-hidden','true');box.appendChild(m)}
+    var b=p.querySelector('b'),s=p.querySelector('small');if(!b)return;
+    var rest='';[].forEach.call(p.childNodes,function(n){if(n.nodeType===3)rest+=n.textContent});
+    var parts=rest.split('·').map(function(x){return x.trim()}).filter(Boolean),key=p.textContent;if(key===last)return;last=key;
+    function fill(){m.innerHTML='';m.appendChild(el('span','mc3-n',b.textContent));var u=el('span','mc3-u');
+      if(parts[1]){u.appendChild(el('b',null,parts[1]));u.appendChild(el('i'))}if(parts[0])u.appendChild(el('span',null,parts[0]));m.appendChild(u);
+      if(s)m.appendChild(el('span','mc3-c',s.textContent));}
+    if(!m.firstChild||matchMedia('(prefers-reduced-motion: reduce)').matches){fill();return}
+    m.classList.add('out');setTimeout(function(){fill();void m.offsetWidth;m.classList.remove('out')},220)}
+  function go(){nav();cap();var p=document.getElementById('mcC');if(p&&!p.dataset.mc3){p.dataset.mc3=1;new MutationObserver(cap).observe(p,{childList:true,characterData:true,subtree:true})}}
+  if(document.readyState==='complete')go();else addEventListener('load',go);
+  addEventListener('hashchange',function(){setTimeout(go,150)});
+})();
+</script>
+<style id="ly-navbar">
+/* nav bar: no box and no line, just the page colour; on the dark About page it turns dark too */
+header.nav{border:0!important;box-shadow:none!important;background:rgb(255,250,243)!important;transition:background .35s}
+html.nv-dk header.nav{background:#120E0B!important}
+html.nv-dk main{background:#120E0B}
+html.nv-dk header.nav .brand,html.nv-dk .nav-in>a.v{color:rgba(255,246,232,.82)!important}
+html.nv-dk .nav-in>a.v:hover,html.nv-dk .nav-in>a.v[aria-current="page"],html.nv-dk .nav-in>a.nv-b:hover>span{color:#FFF6E8!important}
+html.nv-dk .nav-in>a.v[aria-current="page"]::after{background:#FFB45E!important}
+html.nv-dk header.nav .menu{color:#FFF6E8!important}
+</style>
+<script>(function(){function f(){document.documentElement.classList.toggle('nv-dk',/^#about/.test(location.hash))}f();addEventListener('hashchange',f)})();</script><style id="ly-navpill">
+/* the four links sit together in one soft pill; the page you are on is a white chip inside it */
+@media (min-width:900px){
+  .nav-in>a.v{padding:9px 18px!important;background:rgba(29,23,18,.05);transition:background .2s,color .2s}
+  .nav-in>a.nv-a,.nav-in>a.nv-w,.nav-in>a.nv-b{margin-left:-30px!important}
+  .nav-in>a.nv-c{border-radius:999px 0 0 999px;padding-left:22px!important}
+  .nav-in>a.nv-b{border-radius:0 999px 999px 0;padding-right:22px!important}
+  .nav-in>a.v[aria-current="page"]{background:rgba(29,23,18,.05);}
+  .nav-in>a.v[aria-current="page"]>span,.nav-in>a.v[aria-current="page"]>.roll{position:relative}
+  .nav-in>a.v[aria-current="page"]::after{left:8px!important;right:8px!important;top:4px!important;bottom:4px!important;height:auto!important;border-radius:999px;background:#fff!important;z-index:-1;
+    box-shadow:0 2px 8px -3px rgba(29,23,18,.25);transform:none!important;opacity:1!important}
+  .nav-in>a.v{isolation:isolate}
+  .nav-in>a.v[aria-current="page"]::after{display:block!important;content:""!important}
+  html.nv-dk .nav-in>a.v{background:rgba(255,246,232,.07)}
+  html.nv-dk .nav-in>a.v[aria-current="page"]::after{background:rgba(255,246,232,.14)!important;box-shadow:none}
+}
+</style><style id="ly-navjoin">
+/* home, at the top: the orange hero card starts right under the top edge and the bar sits inside it, so the two read as one piece */
+html.nv-top header.nav{background:transparent!important}
+html.nv-top .nav-in{transform:translateY(7px)}
+.nav-in{transition:transform .3s}
+html body [data-view="home"] .zq{transition:none}
+html.nv-home body [data-view="home"] .zq{margin-top:-52px!important;padding-top:calc(86px + 52px)!important;border-radius:32px 32px 0 0!important}
+html.nv-top header.nav{transition:background .3s}
+html.nv-home [data-view="home"] .zq .hx-cv{-webkit-mask:linear-gradient(transparent 0,transparent 60px,#000 130px);mask:linear-gradient(transparent 0,transparent 60px,#000 130px)}
+@media (min-width:900px){
+  .nav-in>a.v{padding:11px 18px!important}
+  html.nv-top .nav-in>a.v{background:rgba(255,246,232,.38)}
+  html.nv-top .nav-in>a.v:hover{background:rgba(255,246,232,.38)}
+  html.nv-top .nav-in>a.v[aria-current="page"]::after{background:#FFF6E8!important}
+}
+html.nv-top .nav-in>a.v,html.nv-top header.nav .brand{color:#1D1712!important}
+</style>
+<script>(function(){var H=document.documentElement;function f(){var home=!location.hash||/^#(home)?$/.test(location.hash);H.classList.toggle('nv-home',home);H.classList.toggle('nv-top',home&&scrollY<30)}
+f();addEventListener('scroll',f,{passive:true});addEventListener('hashchange',f)})();</script><style id="ly-navw2">
+/* ผลงาน: no chip, no oval; only the word itself turns to living gold and glows */
+.na-w{display:none!important}
+.nav-in>a.nv-w:hover>span>.na-w0,.nav-in>a.nv-w:focus-visible>span>.na-w0{
+  background:linear-gradient(100deg,#8A5208 0%,#C07A12 28%,#FFE29A 44%,#FFF6DA 50%,#FFE29A 56%,#C07A12 72%,#8A5208 100%) 0 0/260% 100%!important;
+  -webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;
+  animation:naFame 2.2s cubic-bezier(.4,0,.2,1) infinite,naGlow 2.2s ease-in-out infinite alternate!important}
+@keyframes naGlow{from{filter:drop-shadow(0 0 2px rgba(255,190,70,.55)) drop-shadow(0 0 6px rgba(255,170,40,.35))}to{filter:drop-shadow(0 0 3px rgba(255,200,90,.85)) drop-shadow(0 0 10px rgba(255,170,40,.6))}}
+@media (prefers-reduced-motion:reduce){.nav-in>a.nv-w:hover>span>.na-w0{animation:none!important}}
+</style>

@@ -1,0 +1,91 @@
+<style id="ly-owner">
+/* ===== owner round 14 Nov: closing panel back to ink + code sea; startup block without box or steps ===== */
+/* closing panel: ink panel, the code sea from layer 80 runs behind it */
+html body .end-in{display:block!important;background:#1D1712!important;text-align:center!important;position:relative;overflow:hidden;
+  padding:clamp(80px,10vw,136px) clamp(20px,5vw,80px)!important}
+html body .end-in>*{position:relative;z-index:1}
+html body .end-in>.kn-sea{display:block!important;position:absolute!important;inset:0;z-index:0}
+html body .end-in h2{color:#FFF6E8!important;font:800 clamp(2.2rem,5vw,4.2rem)/1.12 var(--display)!important;letter-spacing:-.02em;max-width:none!important;margin:0 auto!important}
+html body .end-in p{color:rgba(255,246,232,.74)!important;max-width:38ch!important;margin:20px auto 0!important;font-size:clamp(1rem,1.3vw,1.15rem)!important;line-height:1.7}
+html body .end-in p .cl2-sig{display:none!important}
+html body .end-in .end-b{justify-content:center!important;margin-top:34px!important}
+html body .end-in .end-b .e1{color:#FFF6E8!important;text-decoration-color:rgba(255,246,232,.4)!important}
+html body .end-in>.ar-wall{display:none!important}
+</style>
+<style>
+/* nav: the rolling "กิจกรรม" label sat lower than the other links (inline-block with overflow:hidden takes its bottom edge as baseline) */
+.nv-a .roll{vertical-align:top!important}
+</style>
+
+<style>
+.ow-bn{position:absolute!important;inset:0;width:100%!important;height:100%!important;object-fit:cover;z-index:1;display:block}
+</style>
+<script>
+(function(){
+  var MAP={'hamstarter':'cb-hamstarter','port70':'cb-port70','project express':'cb-pexp','national project':'cb-national','business project':'cb-business','python pro pack':'cb-python'};
+  function key(t){return (t||'').toLowerCase().replace(/\s+/g,' ').trim()}
+  function run(){
+    /* seniors captions: name + faculty on separate lines */
+    [].forEach.call(document.querySelectorAll('.sn2-c figcaption'),function(fc){if(fc.dataset.ok)return;fc.dataset.ok=1});
+    /* the two secondary course cards on home and courses: portrait banners instead of a congratulation poster */
+    [].forEach.call(document.querySelectorAll('.fx-row .fx-s'),function(c){var b=c.querySelector('.fx-sb>b');var k=key(b&&b.textContent);var im=c.querySelector('.fx-si img');
+      if(!im||im.dataset.ow)return;if(k==='hamstarter'){im.src='img/cbp-hamstarter.webp';im.dataset.ow=1}else if(k==='national project'){im.src='img/cbp-national.webp';im.dataset.ow=1}});
+    /* course rail type covers: the course banner on top */
+    [].forEach.call(document.querySelectorAll('.rv-cv'),function(cv){if(cv.parentNode.querySelector('.ow-bn'))return;var b=cv.querySelector('b');var f=MAP[key(b&&b.textContent)];if(!f)return;
+      var i=document.createElement('img');i.className='ow-bn';i.src='img/'+f+'.webp';i.alt='';i.loading='lazy';cv.parentNode.appendChild(i)});
+  }
+  var n=0;(function t(){run();if(++n<20)setTimeout(t,400)})();
+  addEventListener('hashchange',function(){setTimeout(run,300)});
+})();
+</script>
+<style>
+/* Port Express: a plain "recommended" tag beside "open for enrolment" (type only: no star, medal or gradient) */
+.ow-rec{position:absolute;top:16px;z-index:4;display:flex;align-items:center;background:#F2A65E;color:#1D1712;font:700 .85rem/1 var(--display);padding:9px 14px;border-radius:999px;letter-spacing:.01em}
+@media (max-width:640px){.ow-rec{top:12px;font-size:.8rem;padding:8px 12px}}
+</style>
+<script>
+(function(){
+  function put(){[].forEach.call(document.querySelectorAll('.fx-main .fx-media'),function(m){if(m.querySelector('.ow-rec'))return;var live=m.querySelector('.ft-live');
+    var t=document.createElement('span');t.className='ow-rec';t.textContent='คอร์สแนะนำ';m.appendChild(t);
+    function pos(){var l=live?live.offsetLeft+live.offsetWidth+8:16;t.style.left=l+'px';if(live)t.style.top=live.offsetTop+'px'}
+    pos();if(window.ResizeObserver&&live)new ResizeObserver(pos).observe(live)})}
+  if(document.readyState==='complete')put();else addEventListener('load',put);
+})();
+</script>
+<style id="ly-mc2">
+/* seniors: same fan layout, tighter and clearer */
+html body [data-view="home"] .mc h2 span{font-size:clamp(4.6rem,9vw,7.4rem)!important}
+html body [data-view="home"] .mc .mc-st{height:clamp(400px,36vw,500px)!important;margin-top:6px!important;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 12%,#000 88%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 12%,#000 88%,transparent 100%)}
+html body [data-view="home"] .mc .mc-c{transition:transform .5s cubic-bezier(.23,1,.32,1),opacity .4s,filter .4s!important;cursor:pointer}
+html body [data-view="home"] .mc .mc-c.on{box-shadow:0 26px 50px -24px rgba(29,23,18,.55)}
+.mc2-nav{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:4px}
+.mc2-nav button{all:unset;cursor:pointer;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#1D1712;box-shadow:0 0 0 1px rgba(29,23,18,.1);transition:background .18s,color .18s}
+.mc2-nav button:hover{background:#1D1712;color:#FFF6E8}
+.mc2-nav button:focus-visible{outline:2px solid #1D1712;outline-offset:2px}
+.mc2-nav svg{width:18px;height:18px}
+html body [data-view="home"] .mc .mc-cap{min-width:0;flex:0 1 auto;margin:0!important}
+html body [data-view="home"] .mc .mc-cap p{margin:0!important}
+html body [data-view="home"] .mc .mc-cap b{font-size:1.15rem}
+.mc2-cnt{display:none}
+@media (max-width:640px){.mc2-nav{gap:10px}.mc2-nav button{width:40px;height:40px}html body [data-view="home"] .mc .mc-st{height:clamp(300px,82vw,380px)!important}}
+</style>
+<script>
+(function(){
+  function go(d){var st=document.getElementById('mcSt');if(!st)return;var cs=[].slice.call(st.querySelectorAll('.mc-c'));if(!cs.length)return;
+    var on=st.querySelector('.mc-c.on'),k=on?+on.dataset.k:0,n=cs.length,t=st.querySelector('.mc-c[data-k="'+((k+d+n)%n)+'"]');if(t)t.click();cnt()}
+  function cnt(){var st=document.getElementById('mcSt'),c=document.querySelector('.mc2-cnt');if(!st||!c)return;var n=st.querySelectorAll('.mc-c').length,on=st.querySelector('.mc-c.on');c.textContent=(on?+on.dataset.k+1:1)+' / '+n}
+  function build(){var cap=document.querySelector('[data-view="home"] .mc .mc-cap');if(!cap||cap.parentNode.classList.contains('mc2-nav'))return;
+    var nav=document.createElement('div');nav.className='mc2-nav';cap.parentNode.insertBefore(nav,cap);
+    var ar='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
+    var p=document.createElement('button');p.type='button';p.setAttribute('aria-label','รุ่นพี่คนก่อนหน้า');p.innerHTML=ar;
+    var x=document.createElement('button');x.type='button';x.setAttribute('aria-label','รุ่นพี่คนถัดไป');x.innerHTML=ar.replace('M15 5l-7 7 7 7','M9 5l7 7-7 7');
+    nav.appendChild(p);nav.appendChild(cap);nav.appendChild(x);
+    var c=document.createElement('p');c.className='mc2-cnt';nav.parentNode.insertBefore(c,nav.nextSibling);
+    p.addEventListener('click',function(){go(-1)});x.addEventListener('click',function(){go(1)});
+    var st=document.getElementById('mcSt');if(st){new MutationObserver(cnt).observe(st,{subtree:true,attributes:true,attributeFilter:['class'],childList:true});
+      st.tabIndex=0;st.setAttribute('aria-label','รุ่นพี่ที่ติดมหาลัย ใช้ลูกศรซ้ายขวาเพื่อเลื่อน');st.addEventListener('keydown',function(e){if(e.key==='ArrowLeft'){e.preventDefault();go(-1)}else if(e.key==='ArrowRight'){e.preventDefault();go(1)}})}
+    cnt()}
+  if(document.readyState==='complete')build();else addEventListener('load',build);
+})();
+</script>
