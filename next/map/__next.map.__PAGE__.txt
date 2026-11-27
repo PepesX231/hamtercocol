@@ -1,28 +1,23 @@
 2:"$Sreact.fragment"
 3:I[7121,[],""]
 4:I[4581,[],""]
-9:"static/chunks/app/map/page-3a66b10269243d05.js"
-a:I[9415,["823","$9"],"AllForOne"]
-b:I[9124,["823","$9"],"LegacyRuntime"]
-c:I[484,[],"OutletBoundary"]
-d:"$Sreact.suspense"
-10:"ViewportBoundary"
-11:I[484,[],"$10"]
-12:"MetadataBoundary"
-13:I[484,[],"$12"]
-:HL["/hamtercocol/img/camp-portfolio.webp","image"]
-:HL["/hamtercocol/next/_next/static/css/8e13ef0de6d2f93d.css","style"]
+9:I[484,[],"OutletBoundary"]
+a:"$Sreact.suspense"
+d:"ViewportBoundary"
+e:I[484,[],"$d"]
+f:"MetadataBoundary"
+10:I[484,[],"$f"]
 6:X
 6:C
 7:X
-8:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$2","c",{"children":[["$","main",null,{"className":"mp","children":[["$","section",null,{"className":"mp-map","aria-label":"แผนที่ผลงาน","children":[["$","iframe",null,{"src":"/hamtercocol/map-app/?embed","title":"แผนที่ผลงานน้อง Hamster Hub ทั่วประเทศ","loading":"eager","allow":"autoplay; fullscreen"}],["$","h1",null,{"className":"mp-title","children":["2026 every",["$","i",null,{"children":"Ham's"}],"Projects"]}]]}],["$","section",null,{"className":"mp-sec","aria-labelledby":"afo-h","children":[["$","h2",null,{"id":"afo-h","className":"mp-h","children":"All for One"}],["$","$La",null,{}]]}],["$","section",null,{"className":"mp-sec mp-join","aria-labelledby":"join-h","children":[["$","h2",null,{"id":"join-h","className":"mp-h","children":"เข้าร่วมกิจกรรม"}],["$","div",null,{"className":"camp","children":[["$","div",null,{"className":"camp-top","children":[["$","div",null,{"children":[["$","p",null,{"className":"camp-name","children":["Portfolio Camp"," ",["$","span",null,{"children":["for ","TCAS 1"]}]]}],["$","p",null,{"className":"camp-meta","children":["4–6 ธ.ค. 2569"," · ","ออนไลน์ผ่าน Discord"]}]]}],["$","div",null,{"className":"camp-buy","children":[["$","p",null,{"className":"camp-price","children":"190 บาท"}],["$","a",null,{"className":"st-btn st-btn-main","href":"https://www.hamsterhub.co/portcamp","target":"_blank","rel":"noopener","children":"สมัครค่าย"}]]}]]}],["$","div",null,{"className":"camp-tracks","children":[["$","div","Portfolio Track",{"className":"camp-track","children":[["$","div",null,{"className":"camp-media","children":["$","img",null,{"src":"/hamtercocol/img/camp-portfolio.webp","alt":"ตัวอย่างพอร์ต Portfolio Track"}]}],["$","p",null,{"className":"camp-tn","children":"Portfolio Track"}],["$","p",null,{"className":"camp-td","children":["มีผลงานแล้ว"," ",["$","span",null,{"aria-hidden":"true","children":"→"}],["$","span",null,{"className":"sr-only","children":"ได้"}]," ","พอร์ต 1 เล่ม"]}]]}],["$","div","Project Track",{"className":"camp-track","children":[["$","div",null,{"className":"camp-media","children":["$","video",null,{"src":"/hamtercocol/img/camp-command-select.mp4","poster":"/hamtercocol/img/camp-command-select.webp","muted":true,"loop":true,"autoPlay":true,"playsInline":true,"preload":"metadata","aria-label":"คลิปเกม Project Track"}]}],["$","p",null,{"className":"camp-tn","children":"Project Track"}],["$","p",null,{"className":"camp-td","children":["ยังไม่มีผลงาน"," ",["$","span",null,{"aria-hidden":"true","children":"→"}],["$","span",null,{"className":"sr-only","children":"ได้"}]," ","เกม 1 เกม"]}]]}]]}]]}]]}],["$","$Lb",null,{"view":"shell","current":"nv-w"}]]}],[["$","link","0",{"rel":"stylesheet","href":"/hamtercocol/next/_next/static/css/8e13ef0de6d2f93d.css","precedence":"next"}]],["$","$Lc",null,{"children":["$","$d",null,{"name":"Next.MetadataOutlet","children":"$@e"}]}]]}],"p":"$@f","v":null,"s":"$7"}}]]
+8:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$2","c",{"children":[["$","main",null,{"style":{"padding":"140px 16px","textAlign":"center"},"children":[["$","meta",null,{"httpEquiv":"refresh","content":"0; url=/hamtercocol/next/"}],["$","script",null,{"dangerouslySetInnerHTML":{"__html":"location.replace('/hamtercocol/next/')"}}],["$","a",null,{"href":"/hamtercocol/next/","children":"ไปหน้าแรก"}]]}],null,["$","$L9",null,{"children":["$","$a",null,{"name":"Next.MetadataOutlet","children":"$@b"}]}]]}],"p":"$@c","v":null,"s":"$7"}}]]
 1:[["children",{"s":"map","h":64,"d":{"r":["$","$2","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","template":["$","$L4",null,{}]}]]}],"p":"$@5","v":"$6","s":"$7"},"c":"$Q8"}]]
-0:{"t":{"t":{"s":"","h":16,"c":"$Q1"},"h":{"r":["$","$2","h",{"children":[null,["$","$L11",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#F6AE55"}]]}],["$","$L13",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$d",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Hall of Fame | Hamster Hub"}],["$","meta","1",{"name":"description","content":"แผนที่ผลงานน้อง Hamster Hub ทั่วประเทศ ผลงานจาก All for One และค่าย Portfolio Camp"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@14","v":null,"s":"$7"}},"a":"$@15","u":"$@16","b":"dq3eXZaiHZcQai7VMZ7II"}
-e:null
-16:true
+0:{"t":{"t":{"s":"","h":16,"c":"$Q1"},"h":{"r":["$","$2","h",{"children":[null,["$","$Le",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#F6AE55"}]]}],["$","$L10",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$a",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Hamster Hub"}],["$","meta","1",{"name":"description","content":"คอร์ส ค่าย และพอร์ตสำหรับน้อง ม.4–6 ที่อยากสร้างเกม แอป และสตาร์ทอัพของตัวเอง"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@11","v":null,"s":"$7"}},"a":"$@12","u":"$@13","b":"TN4jGh2enhVFu_oCuJ5GM"}
+b:null
+13:true
 7:300
 7:C
-15:0
+12:0
 5:"$undefined"
-14:"$undefined"
-f:"$undefined"
+11:"$undefined"
+c:"$undefined"

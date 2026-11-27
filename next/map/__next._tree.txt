@@ -1,10 +1,8 @@
 :HC["/",""]
 :HL["/hamtercocol/next/_next/static/css/94dd4fde6c4ba4d4.css","style"]
-:HL["/hamtercocol/next/_next/static/css/8e13ef0de6d2f93d.css","style"]
 :HL["/hamtercocol/next/legacy/legacy.css","style"]
 :HL["/hamtercocol/next/legacy/body.html","fetch",{"crossOrigin":"anonymous"}]
 :HL["/hamtercocol/next/legacy/manifest.json","fetch",{"crossOrigin":"anonymous"}]
-:HL["/hamtercocol/img/camp-portfolio.webp","image"]
 2:[["children",{"s":"__PAGE__","h":160}]]
 1:[["children",{"s":"map","h":64,"c":"$Q2"}]]
-0:{"b":"dq3eXZaiHZcQai7VMZ7II","t":{"t":{"s":"","h":16,"c":"$Q1"}}}
+0:{"b":"TN4jGh2enhVFu_oCuJ5GM","t":{"t":{"s":"","h":16,"c":"$Q1"}}}

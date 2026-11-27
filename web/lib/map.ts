@@ -1,6 +1,6 @@
 import { img } from "./site";
 
-// Data for /map/ (the Hall of Fame map page). Only facts we can point to:
+// Data for the top of the home page (map, Thailand Game Show, All for One, เข้าร่วมกับ Hamster Hub). Only facts we can point to:
 // - names and makers: the map's review data (hamsterhub-hall-of-fame-map, public/__local-preview/data.json)
 // - awards: the team sheet (TGGS 2026 Top 12 for RE//SLASH) and the owner (depa 2026 winner for Apocalypis Building)
 // - camp: the Portfolio Camp page (github.com/PepesX231/PortfolioCamp)
@@ -10,12 +10,17 @@ export const MAP_APP = "/hamtercocol/map-app/?embed";
 
 export type Work = { id: string; name: string; by: string; award?: string; clip: string; poster: string };
 
-export const ALL_FOR_ONE: Work[] = [
+// Thailand Game Show (the owner, 27 พ.ย.: this row is the Game Show works)
+export const GAME_SHOW: Work[] = [
   { id: "reslash", name: "RE//SLASH", by: "น้องดินสอ", award: "TGGS 2026 Top 12", clip: img("afo-reslash.mp4"), poster: img("afo-reslash.webp") },
   { id: "apocalypis", name: "Apocalypis Building", by: "น้องฟาร์", award: "ชนะเลิศ depa 2026", clip: img("afo-apocalypis.mp4"), poster: img("afo-apocalypis.webp") },
   { id: "potato", name: "Potatogame", by: "น้องธาม", clip: img("afo-potato.mp4"), poster: img("afo-potato.webp") },
   { id: "tripora", name: "TripOra", by: "น้องเตอร์", clip: img("afo-tripora.mp4"), poster: img("afo-tripora.webp") },
   { id: "lasthost", name: "The Last Host", by: "น้องปัณณ์", clip: img("afo-lasthost.mp4"), poster: img("afo-lasthost.webp") },
+];
+
+// All for One University: only SmartParkin' is marked All for One in the map data so far. More works and clips from the team.
+export const ALL_FOR_ONE: Work[] = [
   { id: "smartparkin", name: "SmartParkin'", by: "น้องปันปัน", clip: img("afo-smartparkin.mp4"), poster: img("afo-smartparkin.webp") },
 ];
 

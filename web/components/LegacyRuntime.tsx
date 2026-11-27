@@ -14,7 +14,9 @@ const ROUTES: Record<string, string> = { home: "/", courses: "/routes/", activit
 let started = false;
 
 // `current`: on a shell page, the nav link to mark as this page ("nv-c" Hams Route, "nv-w" ผลงาน, …).
-export function LegacyRuntime({ view, hide = [], current = "nv-c" }: { view: keyof typeof ROUTES | "shell"; hide?: string[]; current?: string }) {
+// `move`: legacy parts to put somewhere else before the old scripts run: [what, "into" | "after", where].
+type Move = [string, "into" | "after", string];
+export function LegacyRuntime({ view, hide = [], current = "nv-c", move = [] }: { view: keyof typeof ROUTES | "shell"; hide?: string[]; current?: string; move?: Move[] }) {
   const shell = view === "shell";
   const box = useRef<HTMLDivElement>(null);
 
@@ -64,6 +66,11 @@ export function LegacyRuntime({ view, hide = [], current = "nv-c" }: { view: key
       if (nav) document.body.insertBefore(nav, document.body.firstChild);
       const pt = el.querySelector("#pt");
       if (pt) document.body.insertBefore(pt, nav ? nav.nextSibling : document.body.firstChild);
+      for (const [what, how, where] of move) {
+        const a = el.querySelector(what), b = document.querySelector(where);
+        if (!a || !b) continue;
+        if (how === "into") b.appendChild(a); else b.after(a);
+      }
       const home = el.querySelector('[data-view="home"]');
       const mark = () => { document.documentElement.dataset.nxView = home && home.classList.contains("on") ? "home" : "other"; };
       if (home) new MutationObserver(mark).observe(home, { attributes: true, attributeFilter: ["class", "hidden", "style"] });

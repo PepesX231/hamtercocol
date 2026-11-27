@@ -1,5 +1,5 @@
-/* /map/ — the Hall of Fame map page, in the site's own colours (cream page, dark ink, the store's orange).
-   The 3D map keeps its navy: it sits as one big square block, inset like the store shelves, with a soft shadow.
+/* Top of the home page (map, Thailand Game Show, All for One, เข้าร่วมกับ Hamster Hub), in the site's own colours.
+   The 3D map keeps its navy: one big square block, inset like the store shelves, with a soft shadow.
    Square corners; depth only from shadows that fade out. */
 
 .mp { background: var(--st-bg); color: var(--st-ink); overflow-x: clip; }

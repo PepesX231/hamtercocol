@@ -16,7 +16,7 @@ For the next person or Claude taking over. Read all of it before changing anythi
 | Repo | https://github.com/PepesX231/hamtercocol (`main` and `gh-pages` are kept identical). Moved here from PepesX231/Hamterco on 27 พ.ย.; leave that old repo alone. |
 | **Current site (Next.js)** | https://pepesx231.github.io/hamtercocol/next/ |
 | Hams Route store | https://pepesx231.github.io/hamtercocol/next/routes/ |
-| Hall of Fame map page | https://pepesx231.github.io/hamtercocol/next/map/ (the 3D map alone: `/hamtercocol/map-app/`) |
+| 3D map alone (shown at the top of home) | https://pepesx231.github.io/hamtercocol/map-app/ |
 | 3D map, original (น้องไอดิน, Vercel, with Gemini chat) | https://hamsterhub-map-review.vercel.app |
 | Portfolio Camp page (source of the camp facts) | https://github.com/PepesX231/PortfolioCamp |
 | Older single-file versions (frozen) | `/hamtercocol/slime.html`, `/hamtercocol/new.html`, `/hamtercocol/` (index.html) |
@@ -73,19 +73,20 @@ The order is `@layer theme, base, legacy, components, utilities`. Legacy CSS oft
 
 | File | What it does |
 |---|---|
-| `app/page.tsx` | Home: `<Hero/>`, `<HomeStore/>`, then the legacy home sections |
+| `app/page.tsx` | Home: `<HomeMap/>`, the legacy "สิ่งที่ Hamster Hub สร้าง" moved in, `<HomeStore/>`, then the rest of the legacy home (Hall of Fame hidden) |
 | `app/routes/…` | Hams Route: store page, kind pages `[d]`, Route detail `r/[id]`, Package detail `p/[id]` |
 | `app/works/page.tsx` | Works page (legacy); `SheetWorks` adds the full awards list to its Hall of Fame tab |
 | `app/courses/` | Redirects to `/routes/` |
 | `app/globals.css` | Global and legacy overrides (search bar, follow bar, sections, Hall of Fame tab, text cuts) |
 | `app/store.css` | Hams Route look: shelves, cards, package blocks, header, arrows |
-| `components/Hero.tsx` | Hero: work cards, "น้องอยาก…", search bar, answers (`solveQuery`), `RouteMatches`, `FollowBar` (the search bar that appears at the bottom of the screen after the big one scrolls away) |
+| `components/Hero.tsx` | (not shown since 27 พ.ย.; kept in case the owner wants it back) Hero: work cards, "น้องอยาก…", search bar, answers (`solveQuery`), `RouteMatches`, `FollowBar` (the search bar that appears at the bottom of the screen after the big one scrolls away) |
 | `components/HomeStore.tsx` | Home shelves: Packages, then 6 Routes |
 | `components/store/*` | `Shelf` (row plus arrows), `Cards` (Package, Route, Program), `PackageShelf`, `GoalSearch`, `Info` (FAQ and steps), `BuyBar` |
 | `components/SheetWorks.tsx` | Puts the awards list from `lib/works.ts` into the Hall of Fame tab |
-| `app/map/page.tsx`, `app/map.css` | Hall of Fame map page: the 3D map (iframe), All for One, เข้าร่วมกิจกรรม (Portfolio Camp) |
-| `components/map/AllForOne.tsx` | Big clip in the middle, neighbours peeking; plays each clip once then slides on; pause, squares, swipe |
-| `lib/map.ts` | The works in All for One and the camp facts, with where each fact comes from |
+| `components/HomeMap.tsx`, `app/map.css` | Top of home: 3D map (iframe), Thailand Game Show, All for One, เข้าร่วมกับ Hamster Hub (Portfolio Camp). `app/map/` only redirects to home |
+| `components/map/ClipStage.tsx` | Clip row: big clip in the middle, neighbours peeking; plays each once then slides on; pause, squares, swipe |
+| `components/LegacyRuntime.tsx` `move` | Moves legacy parts before the old scripts run (home: "สิ่งที่สร้าง" up, "จัดกิจกรรมร่วมกับ" under กิจกรรมล่าสุด) |
+| `lib/map.ts` | Works in Thailand Game Show and All for One, and the camp facts, with where each fact comes from |
 | `dev/builds/map_app.py` | Builds น้องไอดิน's map repo into `map-app/` with base `/hamtercocol/map-app/`, prefixes its absolute paths, shrinks its clips |
 | `components/LegacyRuntime.tsx` | Runs the legacy page (see above) |
 | `lib/routes.ts` | All Hams Route data: 6 kinds, 24 Routes, 4 Packages, 2 programs, goal search `findForGoal` |
@@ -106,14 +107,15 @@ To add words, extend `INTENTS` in `lib/understand.ts`, then run `harness.js`. Th
 
 ## 5. What the site looks like now
 
-**Home, in order:**
-1. **Hero.** Work cards gather around the search bar. "น้องอยาก…" has a typed wish. The search answers appear under the bar.
-2. **Shelves.** "**แพ็กเกจ** ตัวเลือกเป้าหมายของน้อง" (4 Packages), then "**Route** ฝึกทีละทักษะ" (6 Routes).
-3. **สิ่งที่ Hamster Hub สร้าง:**
-   - PHC Map clip, a Mr. City block (play button opening its Facebook clip) and a Hamster Quest app screen
-   - REVOICE
-   - three real game clips: SLASH//SPEED, Apocalypis Building (depa 2026 winner) and Eugation Strike, cut from `img/reel.mp4`
-4. Hall of Fame (dark, gold), seniors who got into university, activities, closing section and footer.
+**Home, in order (owner, 27 พ.ย.):**
+1. **3D map** (น้องไอดิน's app), title "2026 every**Ham's**Projects". Replaced the hero and its search bar.
+2. **Thailand Game Show**: clip row starting with RE//SLASH.
+3. **All for One**: clip row of All for One University works (only SmartParkin' so far; more from the team).
+4. **เข้าร่วมกับ Hamster Hub**: Portfolio Camp card.
+5. **สิ่งที่ Hamster Hub สร้าง** (legacy, moved up).
+6. Shelves: Packages, then Routes.
+7. รุ่นพี่ติดมหาลัย, กิจกรรมล่าสุด, จัดกิจกรรมร่วมกับ (now right under กิจกรรมล่าสุด), closing section and footer.
+- **Hall of Fame (dark, gold) is removed from home.** The awards list stays on /works/.
 
 **Hams Route (`/routes/`):**
 - Apple Store–style header: name on the left, mascot in the middle, question on the right.
@@ -136,12 +138,12 @@ To add words, extend `INTENTS` in `lib/understand.ts`, then run `harness.js`. Th
 - Port Express: 2 months, ฿5,990
 - Project Build Skill: 12 months, ฿19,990
 
-**Hall of Fame map page (`/map/`, 27 พ.ย.)** from พี่ฮิว's Figma and the 27 พ.ย. call:
-- Order: map → All for One → เข้าร่วมกิจกรรม. Nothing else. Not an About page; it sells activities.
-- The map is น้องไอดิน's 3D app in an iframe with `?embed`: the mouse wheel and one-finger swipe scroll the page, its own logo is hidden, the page adds the title "2026 every**Ham's**Projects".
-- All for One starts with RE//SLASH, as asked. Up to about 10 works; game clips get the big size.
-- Camp card: Portfolio Camp for TCAS 1, 4–6 ธ.ค. 2569, online on Discord, 190 บาท, apply at hamsterhub.co/portcamp (all from the PortfolioCamp page).
-- Do not write "48 คน" on this page (พี่ฮิว: boring).
+**Top of home, details (27 พ.ย., from พี่ฮิว's Figma, the call and the owner):**
+- It was first built as a separate page /map/; the owner wants it on home instead. /map/ now redirects to home.
+- The map runs in an iframe with `?embed`: the mouse wheel and one-finger swipe scroll the page; its own logo is hidden.
+- Game shows get big clips; All for One can hold about 10 works.
+- Camp: Portfolio Camp for TCAS 1, 4–6 ธ.ค. 2569, online on Discord, 190 บาท, apply at hamsterhub.co/portcamp (from the PortfolioCamp page).
+- Do not write "48 คน" in these sections (พี่ฮิว: boring).
 - Site colours (cream, ink, store orange). The map keeps its navy as one inset block.
 
 ## 6. Facts (never invent numbers)
@@ -213,6 +215,6 @@ To add words, extend `INTENTS` in `lib/understand.ts`, then run `harness.js`. Th
 6. **From the team:** real prices, prerequisites, durations and the apply link for Routes and Packages.
 7. **Rewrite remaining legacy sections as React components,** one at a time, then drop them from `legacy_next.py`. This is the long-term goal so the friends inherit a clean Next.js app.
 8. **Hams Route kind pages:** these can now be reached only from the breadcrumb on a Route page, because the "ดูทั้งหมด" links were removed at the owner's request.
-9. **Map page, hamster chat:** Gemini needs a server. On GitHub Pages the chat shows its "browse by hand" fallback. To turn it on, the map's `/api/guide` (Vercel) must accept requests from pepesx231.github.io / hamsterhub.co (`server/guide.ts` line 32 refuses other origins) and the map page must call it, or the whole site must move to a host with server functions.
-10. **Map page, data:** the map shows its review data (`public/__local-preview/data.json` in the map repo, 10 students). Several award names there are not in the team sheet; check them with น้องไอดิน before launch. Real data from the sheet is a separate step (`server/sheets.ts` in the map repo).
-11. **Map page, link:** no nav link points to `/map/` yet. Ask where it should go (ผลงาน? the footer's Hall of Fame?).
+9. **Home map, hamster chat:** Gemini needs a server. On GitHub Pages the chat shows its "browse by hand" fallback. To turn it on, the map's `/api/guide` (Vercel) must accept requests from pepesx231.github.io / hamsterhub.co (`server/guide.ts` line 32 refuses other origins) and the map page must call it, or the whole site must move to a host with server functions.
+10. **Home map, data:** the map shows its review data (`public/__local-preview/data.json` in the map repo, 10 students). Several award names there are not in the team sheet; check them with น้องไอดิน before launch. Real data from the sheet is a separate step (`server/sheets.ts` in the map repo).
+11. **All for One works:** the team's list and clips (only SmartParkin' is known). Is TripOra a Game Show work?

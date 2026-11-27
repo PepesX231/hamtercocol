@@ -2,9 +2,8 @@ const {chromium}=require('playwright');(async()=>{const b=await chromium.launch(
 for(const W of [1440,390]){const H=W<500?844:900;const p=await b.newPage({viewport:{width:W,height:H},isMobile:W<500,hasTouch:W<500});const e=[];p.on('pageerror',x=>e.push(x.message.slice(0,100)));const log=(...a)=>console.log(W,...a);
 const B='http://localhost:8791/hamtercocol/next/';
 await p.goto(B);await p.waitForFunction(()=>!document.getElementById('hhL')&&document.querySelector('.lg-box')?.dataset.ready,null,{timeout:30000});
-// 1 home search -> route matches
-await p.click('.nx-bar input',{force:true});await p.keyboard.type('อยากทำเว็บ');await p.keyboard.press('Enter');await p.waitForTimeout(2500);
-log('home matches:',await p.evaluate(()=>[...document.querySelectorAll('.nx-found b')].map(b=>b.textContent).join(', ')));
+// 1 home: the map and the clip rows are on top (the hero search was removed on 27 พ.ย.)
+log('home top:',await p.evaluate(()=>[!!document.querySelector('.mp-map iframe'),...[...document.querySelectorAll('.mp-h')].map(h=>h.textContent)].join(' | ')));
 await p.screenshot({path:'f1-'+W+'.png'});
 // 2 nav to Hams Route
 await p.goto(B);await p.waitForFunction(()=>document.querySelector('.lg-box')?.dataset.ready,null,{timeout:30000});
