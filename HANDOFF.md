@@ -80,7 +80,7 @@ The order is `@layer theme, base, legacy, components, utilities`. Legacy CSS oft
 | `app/globals.css` | Global and legacy overrides (search bar, follow bar, sections, Hall of Fame tab, text cuts) |
 | `app/store.css` | Hams Route look: shelves, cards, package blocks, header, arrows |
 | `components/Hero.tsx` | (not shown since 27 พ.ย.; kept in case the owner wants it back) Hero: work cards, "น้องอยาก…", search bar, answers (`solveQuery`), `RouteMatches`, `FollowBar` (the search bar that appears at the bottom of the screen after the big one scrolls away) |
-| `components/HomeStore.tsx` | Home shelves: Packages, then 6 Routes |
+| `components/HomeStore.tsx` | Home shelf: Packages (the Route shelf was removed from home) |
 | `components/store/*` | `Shelf` (row plus arrows), `Cards` (Package, Route, Program), `PackageShelf`, `GoalSearch`, `Info` (FAQ and steps), `BuyBar` |
 | `components/SheetWorks.tsx` | Puts the awards list from `lib/works.ts` into the Hall of Fame tab |
 | `components/HomeMap.tsx`, `app/map.css` | Top of home: 3D map (iframe), Thailand Game Show, All for One, เข้าร่วมกับ Hamster Hub (Portfolio Camp). `app/map/` only redirects to home |
@@ -110,14 +110,13 @@ To add words, extend `INTENTS` in `lib/understand.ts`, then run `harness.js`. Th
 ## 5. What the site looks like now
 
 **Home, in order (owner, 27 พ.ย.):**
-1. **3D map** (น้องไอดิน's app), title "2026 every**Ham's**Projects". Replaced the hero and its search bar.
+1. **3D map** (น้องไอดิน's app, in the site's colours), title "2026 every**Ham's**Projects". Replaced the hero and its search bar.
 2. **Thailand Game Show**: clip row starting with RE//SLASH.
 3. **All for One**: clip row of All for One University works (only SmartParkin' so far; more from the team).
 4. **เข้าร่วมกับ Hamster Hub**: Portfolio Camp card.
-5. **สิ่งที่ Hamster Hub สร้าง** (legacy, moved up).
-6. Shelves: Packages, then Routes.
-7. รุ่นพี่ติดมหาลัย, กิจกรรมล่าสุด, จัดกิจกรรมร่วมกับ (now right under กิจกรรมล่าสุด), closing section and footer.
-- **Hall of Fame (dark, gold) is removed from home.** The awards list stays on /works/.
+5. Packages shelf.
+6. กิจกรรมล่าสุด, จัดกิจกรรมร่วมกับ, รุ่นพี่ติดมหาลัย (moved down), สร้างอนาคตไปด้วยกัน (light), footer.
+- **Removed from home:** Hall of Fame (the awards list stays on /works/), "สิ่งที่ Hamster Hub สร้าง", the Route shelf (Routes stay on /routes/).
 
 **Hams Route (`/routes/`):**
 - Apple Store–style header: name on the left, mascot in the middle, question on the right.

@@ -1,6 +1,6 @@
 :HC["/",""]
 :HL["/hamtercocol/next/_next/static/css/94dd4fde6c4ba4d4.css","style"]
-:HL["/hamtercocol/next/_next/static/css/87e67f00d67b3c77.css","style"]
+:HL["/hamtercocol/next/_next/static/css/b9134215855c80f3.css","style"]
 :HL["/hamtercocol/next/legacy/legacy.css","style"]
 :HL["/hamtercocol/next/legacy/body.html","fetch",{"crossOrigin":"anonymous"}]
 :HL["/hamtercocol/next/legacy/manifest.json","fetch",{"crossOrigin":"anonymous"}]
@@ -9,11 +9,5 @@
 :HL["/hamtercocol/next/route-art/pk2-web.webp","image"]
 :HL["/hamtercocol/next/route-art/pk2-compete.webp","image"]
 :HL["/hamtercocol/next/route-art/pk2-proto.webp","image"]
-:HL["/hamtercocol/next/route-art/t-unity.webp","image"]
-:HL["/hamtercocol/next/route-art/t-web.webp","image"]
-:HL["/hamtercocol/next/route-art/t-blender.webp","image"]
-:HL["/hamtercocol/next/route-art/t-iot.webp","image"]
-:HL["/hamtercocol/next/route-art/t-python.webp","image"]
-:HL["/hamtercocol/next/route-art/t-pitch.webp","image"]
 1:[["children",{"s":"__PAGE__","h":128}]]
-0:{"b":"VKkxWppdxGtUWKXeEPk8v","t":{"t":{"s":"","h":16,"c":"$Q1"}}}
+0:{"b":"nUSSWCByCV6LnG_CXLajC","t":{"t":{"s":"","h":16,"c":"$Q1"}}}
