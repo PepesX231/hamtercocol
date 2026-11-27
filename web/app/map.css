@@ -4,14 +4,14 @@
 
 .mp { background: var(--st-bg); color: var(--st-ink); overflow-x: clip; }
 
-/* the map: one screen tall under the 60px header, starting 2.8vw from the edges like the store */
-.mp-map { position: relative; margin: 0 2.8vw; height: calc(100svh - 60px - 2.8vw); min-height: 520px;
-  background: #102747; box-shadow: 0 40px 80px -48px rgba(29, 23, 18, 0.55); }
-.mp-map iframe { display: block; width: 100%; height: 100%; border: 0; background: #102747; }
+/* the map: one screen tall under the 60px header, full width. In ?embed it draws on the page's own cream,
+   so it runs into the header above and the section below without an edge. */
+.mp-map { position: relative; height: calc(100svh - 60px); min-height: 520px; max-height: 1000px; background: var(--st-bg); }
+.mp-map iframe { display: block; width: 100%; height: 100%; border: 0; background: var(--st-bg); }
 .mp-title { position: absolute; top: clamp(18px, 3.2vh, 34px); left: 0; right: 0; margin: 0; padding: 0 16px; text-align: center; pointer-events: none;
   font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 3.4vw, 46px); letter-spacing: -0.015em; line-height: 1.1;
-  color: #fff; text-shadow: 0 2px 18px rgba(4, 12, 28, 0.55); }
-.mp-title i { font-style: normal; color: #ffb45e; }
+  color: var(--st-ink); }
+.mp-title i { font-style: normal; color: #b4541a; }
 
 /* sections */
 .mp-sec { padding: clamp(72px, 10vw, 132px) 0 0; }
@@ -64,3 +64,16 @@
 .camp-td { margin: 4px 0 0; color: var(--st-sub); font-size: 16px; }
 
 @media (prefers-reduced-motion: reduce) { .afo-item { transition: none; } }
+
+/* the closing section ("สร้างอนาคตไปด้วยกัน") in the site's light colours too: the owner asked for no dark blocks on home.
+   The theme layer outranks the legacy layer's own !important rules. */
+@layer theme {
+  [data-view="home"] section.end { background: var(--st-bg) !important; color: var(--st-ink) !important; box-shadow: none !important; }
+  [data-view="home"] section.end::before, [data-view="home"] section.end::after,
+  [data-view="home"] section.end .end-in::before, [data-view="home"] section.end .end-in::after { display: none !important; }
+  [data-view="home"] section.end > :not(.end-in) { display: none !important; }
+  [data-view="home"] section.end .end-in { background: transparent !important; box-shadow: none !important; }
+  [data-view="home"] section.end h2 { color: var(--st-ink) !important; text-shadow: none !important; }
+  [data-view="home"] section.end p { color: var(--st-sub) !important; }
+  [data-view="home"] section.end a.e1 { color: var(--st-ink) !important; }
+}

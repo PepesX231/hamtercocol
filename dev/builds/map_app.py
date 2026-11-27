@@ -44,7 +44,7 @@ def main():
                 changed += 1
     print(f"prefixed public paths in {changed} files")
 
-    # Project clips are 6-97 MB. Re-encode big ones for the web (480p, a few MB each).
+    # Project clips are 6-97 MB. Re-encode big ones for the web (720p, sharp enough on a big screen).
     if shutil.which("ffmpeg"):
         for folder, _, files in os.walk(os.path.join(tmp, "projects")):
             for name in files:
@@ -52,8 +52,8 @@ def main():
                 if name.endswith(".mp4") and os.path.getsize(path) > 4_000_000:
                     small = path + ".small.mp4"
                     subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", path,
-                                    "-vf", "scale=min(854\\,iw):-2", "-c:v", "libx264", "-preset", "veryfast",
-                                    "-crf", "30", "-movflags", "+faststart", "-c:a", "aac", "-b:a", "64k", small],
+                                    "-vf", "scale=min(1280\\,iw):-2", "-c:v", "libx264", "-preset", "veryfast",
+                                    "-crf", "29", "-movflags", "+faststart", "-c:a", "aac", "-b:a", "96k", small],
                                    check=True)
                     os.replace(small, path)
     else:

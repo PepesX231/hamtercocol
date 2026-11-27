@@ -20,6 +20,16 @@ export function ClipStage({ works }: { works: Work[] }) {
 
   const go = useCallback((i: number) => setAt(((i % n) + n) % n), [n]);
 
+  // the map's student cards can ask to show one work here (components/MapFrame.tsx)
+  useEffect(() => {
+    const show = (e: Event) => {
+      const k = works.findIndex((w) => w.mapProject && w.mapProject === (e as CustomEvent<{ project?: string }>).detail?.project);
+      if (k >= 0) { setAt(k); setPaused(false); }
+    };
+    window.addEventListener("hh-show", show);
+    return () => window.removeEventListener("hh-show", show);
+  }, [works]);
+
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setPaused(true);
     const io = new IntersectionObserver(([e]) => setSeen(e.isIntersecting), { threshold: 0.35 });

@@ -86,7 +86,9 @@ The order is `@layer theme, base, legacy, components, utilities`. Legacy CSS oft
 | `components/HomeMap.tsx`, `app/map.css` | Top of home: 3D map (iframe), Thailand Game Show, All for One, เข้าร่วมกับ Hamster Hub (Portfolio Camp). `app/map/` only redirects to home |
 | `components/map/ClipStage.tsx` | Clip row: big clip in the middle, neighbours peeking; plays each once then slides on; pause, squares, swipe |
 | `components/LegacyRuntime.tsx` `move` | Moves legacy parts before the old scripts run (home: "สิ่งที่สร้าง" up, "จัดกิจกรรมร่วมกับ" under กิจกรรมล่าสุด) |
-| `lib/map.ts` | Works in Thailand Game Show and All for One, and the camp facts, with where each fact comes from |
+| `lib/map.ts` | Works in Thailand Game Show and All for One (with their id in the map's data), and the camp facts, with sources |
+| `components/MapFrame.tsx` | The map iframe and its messages: pauses the map off screen, tells it which works have a section here, scrolls to a section when a student card asks |
+| `components/AutoVideo.tsx` | Muted loop clip that plays only while on screen |
 | `dev/builds/map_app.py` | Builds น้องไอดิน's map repo into `map-app/` with base `/hamtercocol/map-app/`, prefixes its absolute paths, shrinks its clips |
 | `components/LegacyRuntime.tsx` | Runs the legacy page (see above) |
 | `lib/routes.ts` | All Hams Route data: 6 kinds, 24 Routes, 4 Packages, 2 programs, goal search `findForGoal` |
@@ -144,7 +146,9 @@ To add words, extend `INTENTS` in `lib/understand.ts`, then run `harness.js`. Th
 - Game shows get big clips; All for One can hold about 10 works.
 - Camp: Portfolio Camp for TCAS 1, 4–6 ธ.ค. 2569, online on Discord, 190 บาท, apply at hamsterhub.co/portcamp (from the PortfolioCamp page).
 - Do not write "48 คน" in these sections (พี่ฮิว: boring).
-- Site colours (cream, ink, store orange). The map keeps its navy as one inset block.
+- Site colours everywhere (cream, ink, store orange). The map draws in the site's colours in `?embed` (map repo: `src/ui/light.css`, `light` in `src/scene/ThailandMap.tsx`): cream page, sand land, orange for provinces with awards. The closing section is light too (`app/map.css`).
+- The map is the hub (พี่อุ้ย, 27 พ.ย.): a student card on the map shows "ดูใน Thailand Game Show ↓" / "ดูใน All for One ↓" for works that have a clip here; it scrolls down and shows that clip. Messages are in the map repo's `src/embed.ts`.
+- Lag: the map stops all animation while it is off screen (it reads `document.hidden` as true), and clips play only while on screen.
 
 ## 6. Facts (never invent numbers)
 
@@ -217,4 +221,5 @@ To add words, extend `INTENTS` in `lib/understand.ts`, then run `harness.js`. Th
 8. **Hams Route kind pages:** these can now be reached only from the breadcrumb on a Route page, because the "ดูทั้งหมด" links were removed at the owner's request.
 9. **Home map, hamster chat:** Gemini needs a server. On GitHub Pages the chat shows its "browse by hand" fallback. To turn it on, the map's `/api/guide` (Vercel) must accept requests from pepesx231.github.io / hamsterhub.co (`server/guide.ts` line 32 refuses other origins) and the map page must call it, or the whole site must move to a host with server functions.
 10. **Home map, data:** the map shows its review data (`public/__local-preview/data.json` in the map repo, 10 students). Several award names there are not in the team sheet; check them with น้องไอดิน before launch. Real data from the sheet is a separate step (`server/sheets.ts` in the map repo).
+12. **Map award names vs TGS:** in the map data RE//SLASH is under "Asian Game Talent Showcase 2026", but the owner says it is a Thailand Game Show work. Ask น้องไอดิน to fix the award names in `data.json`.
 11. **All for One works:** the team's list and clips (only SmartParkin' is known). Is TripOra a Game Show work?
