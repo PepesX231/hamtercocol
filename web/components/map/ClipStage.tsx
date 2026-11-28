@@ -16,7 +16,8 @@ function Mock() {
 
 /*
  * A row of work clips on the home page (Thailand Game Show, All for One): one big clip in the middle, the ones
- * before and after peeking in at the edges. Each clip plays once (muted) and the next slides in; RE//SLASH first,
+ * before and after turned away in 3D at the edges (cover flow; owner, 28 พ.ย.: "เฟี้ยวๆ"). The bars under it fill as
+ * the clip plays. Each clip plays once (muted) and the next slides in; RE//SLASH first,
  * as พี่ฮิว asked. It stops off screen, can be paused (it moves on its own), and stays still for reduced-motion users.
  * Tap a side clip, a square under it, or swipe to choose. With one work it simply loops.
  */
@@ -25,11 +26,12 @@ export function ClipStage({ works }: { works: Work[] }) {
   const [at, setAt] = useState(0);
   const [paused, setPaused] = useState(false);
   const [seen, setSeen] = useState(false);
+  const [prog, setProg] = useState(0); // how far the middle clip has played, 0..1 (drives the bar under it)
   const box = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const swipe = useRef<number | null>(null);
 
-  const go = useCallback((i: number) => setAt(((i % n) + n) % n), [n]);
+  const go = useCallback((i: number) => { setAt(((i % n) + n) % n); setProg(0); }, [n]);
 
   // the map's student cards can ask to show one work here (components/MapFrame.tsx)
   useEffect(() => {
@@ -100,6 +102,7 @@ export function ClipStage({ works }: { works: Work[] }) {
                   loop={n < 2}
                   preload="auto"
                   onEnded={() => { if (!paused) go(at + 1); }}
+                  onTimeUpdate={(e) => { const v = e.currentTarget; if (v.duration) setProg(v.currentTime / v.duration); }}
                   aria-label={`คลิป ${item.name} โดย ${item.by}`}
                 />
               ) : (
@@ -113,15 +116,30 @@ export function ClipStage({ works }: { works: Work[] }) {
       </div>
 
       <div className="afo-cap" aria-live="polite">
-        <p className="afo-name">{w.name}</p>
-        <p className="afo-by">{w.by}{w.award ? <> · <b>{w.award}</b></> : null}</p>
+        <div key={w.id} className="afo-cap-in">
+          {n > 1 && <p className="afo-no" aria-hidden="true">{String(at + 1).padStart(2, "0")}<span>/{String(n).padStart(2, "0")}</span></p>}
+          <div>
+            <p className="afo-name">{w.name}</p>
+            <p className="afo-by">{w.by}{w.award ? <> · <b>{w.award}</b></> : null}</p>
+          </div>
+        </div>
       </div>
 
       {n > 1 && (
         <div className="afo-ctl">
           <div className="afo-dots" role="group" aria-label="เลือกผลงาน">
             {works.map((item, k) => (
-              <button key={item.id} type="button" aria-label={item.name} aria-current={k === at || undefined} onClick={() => go(k)} />
+              <button
+                key={k === at ? `${item.id}-${at}` : item.id}
+                type="button"
+                aria-label={item.name}
+                aria-current={k === at || undefined}
+                data-done={k < at || undefined}
+                data-mock={(k === at && !item.clip) || undefined}
+                data-paused={paused || !seen || undefined}
+                style={k === at && item.clip ? ({ "--p": prog } as React.CSSProperties) : undefined}
+                onClick={() => go(k)}
+              />
             ))}
           </div>
           <button type="button" className="afo-play" onClick={() => setPaused((p) => !p)} aria-label={paused ? "เล่นต่อ" : "หยุด"}>
