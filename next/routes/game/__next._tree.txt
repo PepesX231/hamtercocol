@@ -1,5 +1,5 @@
 :HC["/",""]
-:HL["/hamtercocol/next/_next/static/css/677da3a217daa259.css","style"]
+:HL["/hamtercocol/next/_next/static/css/94dd4fde6c4ba4d4.css","style"]
 :HL["/hamtercocol/next/legacy/legacy.css","style"]
 :HL["/hamtercocol/next/legacy/body.html","fetch",{"crossOrigin":"anonymous"}]
 :HL["/hamtercocol/next/legacy/manifest.json","fetch",{"crossOrigin":"anonymous"}]
@@ -15,4 +15,4 @@
 3:[["children",{"s":"__PAGE__","h":160}]]
 2:[["children",{"s":{"n":"d","t":"d","k":"game","s":["p","r"]},"h":65632,"c":"$Q3"}]]
 1:[["children",{"s":"routes","h":131136,"c":"$Q2"}]]
-0:{"b":"_J45JedU3wEKt77n7ybTp","t":{"t":{"s":"","h":131088,"c":"$Q1"}}}
+0:{"b":"ymRP2SLn5BK59at9CRrsa","t":{"t":{"s":"","h":131088,"c":"$Q1"}}}

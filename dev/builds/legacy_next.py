@@ -91,7 +91,7 @@ body = body.replace('<img src="img/sc-lyno.webp" alt="น้องดา กั�
     '<figure class="oc-f oc-wide"><video src="img/clip-slash.mp4" poster="img/clip-slash.jpg" muted loop playsinline autoplay preload="metadata" aria-label="คลิปจากเกม SLASH//SPEED"></video><figcaption>SLASH//SPEED</figcaption></figure><figure class="oc-f"><video src="img/clip-building.mp4" poster="img/clip-building.jpg" muted loop playsinline autoplay preload="metadata" aria-label="คลิปจากเกม Apocalypis Building"></video><figcaption>Apocalypis Building</figcaption></figure><figure class="oc-f"><video src="img/clip-eugation.mp4" poster="img/clip-eugation.jpg" muted loop playsinline autoplay preload="metadata" aria-label="คลิปจากเกม Eugation Strike"></video><figcaption>Eugation Strike</figcaption></figure>')
 # less to read on the home page (Apple's home has about half our text)
 body = body.replace('สร้างอนาคตไปด้วยกัน<br>จากผลงานแรกของน้อง สู่สิ่งที่เปลี่ยนโลก', 'สร้างอนาคตไปด้วยกัน')
-# 28 พ.ย.: the map's TCAS 2026 line links down to this section
+# anchor for links to the seniors' section
 body = body.replace('<section class="mc">', '<section id="tcas" class="mc">', 1)
 # 28 พ.ย. (owner): the seniors' heading says which year
 body = body.replace('<h2 class="rv">รุ่นพี่ติดมหาลัยแล้ว <span>48 คน</span></h2>', '<h2 class="rv">รุ่นพี่ปี 69 ติดมหาลัยแล้ว <span>48 คน</span></h2>')
