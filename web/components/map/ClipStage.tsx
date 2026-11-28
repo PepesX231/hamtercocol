@@ -6,8 +6,8 @@ import type { Work } from "@/lib/map";
 /*
  * Thailand Game Show as a gallery wall (owner, 28 พ.ย., from a Pinterest gallery; 2nd pass): big squares hung in a row
  * that runs off the edge, each one filled with its game's clip, all clips playing at once. The square in the middle
- * grows a little and its edges melt into the page colour (no hard edge); the others stay plain squares with a soft
- * shadow. Name and maker sit under each square; the award is an orange label on it. Swipe or use the arrows; no dots
+ * grows (real size, not a CSS scale: a scaled video leaves a 1px line on its edge) and every square's edges melt into
+ * the page colour, the middle one most (owner: no hard edges). Name and maker sit under each square; the award is an orange label on it. Swipe or use the arrows; no dots
  * (the owner: don't spoil what's next). RE//SLASH first, as พี่ฮิว asked. Clips stop when the section is off screen and
  * for reduced-motion users.
  */
@@ -89,6 +89,7 @@ export function ClipStage({ works }: { works: Work[] }) {
             onClick={() => scrollTo(k)}
           >
             <div className="gw-media">
+              <div className="gw-pic">
               <video
                 ref={(el) => { vids.current[k] = el; }}
                 src={w.clip}
@@ -99,6 +100,7 @@ export function ClipStage({ works }: { works: Work[] }) {
                 preload="metadata"
                 aria-label={`คลิป ${w.name} โดย ${w.by}`}
               />
+              </div>
               {w.award && <p className="gw-award">{w.award}</p>}
             </div>
             <h3 className="gw-name">{w.name}</h3>
