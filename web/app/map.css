@@ -74,7 +74,7 @@
   [data-view="home"] section.end { background: var(--st-bg) !important; color: var(--st-ink) !important; box-shadow: none !important; }
   [data-view="home"] section.end::before, [data-view="home"] section.end::after,
   [data-view="home"] section.end .end-in::before, [data-view="home"] section.end .end-in::after { display: none !important; }
-  [data-view="home"] section.end > :not(.end-in), [data-view="home"] section.end canvas { display: none !important; } /* the code-rain canvas */
+  [data-view="home"] section.end > :not(.end-in) { display: none !important; } /* the code-rain canvas (numbers and code) stays: the owner wants it */
   [data-view="home"] section.end .end-in { background: transparent !important; box-shadow: none !important; }
   [data-view="home"] section.end h2 { color: var(--st-ink) !important; text-shadow: none !important; }
   [data-view="home"] section.end p { color: var(--st-sub) !important; }
