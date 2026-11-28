@@ -27,11 +27,6 @@ export function HomeMap() {
             <p className="camp-k">เปิดรับสมัคร</p>
             <h3 className="camp-name">{CAMP.name}<br />for {CAMP.for}</h3>
             <p className="camp-meta">{CAMP.when} · {CAMP.where}</p>
-            <ul className="camp-tracks">
-              {CAMP.tracks.map((t) => (
-                <li key={t.name}><b>{t.name}</b> {t.have} <span aria-hidden="true">→</span><span className="sr-only">ได้</span> {t.get}</li>
-              ))}
-            </ul>
             <div className="camp-buy">
               <a className="camp-btn" href={CAMP.apply} target="_blank" rel="noopener">สมัครค่าย</a>
               <p className="camp-price">{CAMP.price}</p>
@@ -43,6 +38,7 @@ export function HomeMap() {
                 {"clip" in t.media
                   ? <AutoVideo src={t.media.clip} poster={t.media.img} aria-label={`คลิปเกม ${t.name}`} />
                   : <img src={t.media.img} alt={`ตัวอย่างพอร์ต ${t.name}`} />}
+                <p className="camp-tag"><b>{t.name}</b> {t.have} <span aria-hidden="true">→</span><span className="sr-only">ได้</span> {t.get}</p>
               </div>
             ))}
           </div>
@@ -53,7 +49,7 @@ export function HomeMap() {
         <ClipStage works={GAME_SHOW} />
       </section>
 
-      <section id="afo" className="mp-sec" aria-labelledby="afo-h">
+      <section id="afo" className="mp-sec mp-small" aria-labelledby="afo-h">
         <h2 id="afo-h" className="mp-h">{SECTIONS.afo}</h2>
         <ClipStage works={ALL_FOR_ONE} />
       </section>
