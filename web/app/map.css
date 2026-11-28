@@ -29,22 +29,29 @@
 /* Thailand Game Show as a gallery wall (components/map/ClipStage.tsx): big squares filled with their clips, all playing;
    the one in the middle grows and its edges melt into the page colour */
 @property --fade { syntax: "<percentage>"; inherits: false; initial-value: 0%; }
-.gw { --cw: clamp(240px, min(32vw, 50svh), 480px); }
+@property --edge { syntax: "<percentage>"; inherits: false; initial-value: 0%; }
+.gw { --cw: clamp(230px, min(30vw, 46svh), 460px); }
 @media (max-width: 720px) { .gw { --cw: 74vw; } }
 .gw-row { position: relative; display: flex; align-items: flex-start; gap: clamp(22px, 3vw, 56px); overflow-x: auto; overflow-y: visible;
   scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain;
-  padding: 30px calc((100% - var(--cw)) / 2) 60px; margin-bottom: -40px; }
+  padding: 72px calc((100% - var(--cw)) / 2) 80px; margin-block: -30px -50px; }
 .gw-row::-webkit-scrollbar { display: none; }
 .gw-card { flex: 0 0 var(--cw); scroll-snap-align: center; cursor: pointer; transition: transform 700ms cubic-bezier(0.2, 0.85, 0.2, 1); }
 .gw-media { position: relative; aspect-ratio: 1; overflow: hidden; background: var(--st-dark);
-  --fade: 0%; transition: --fade 700ms ease, box-shadow 700ms ease;
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--fade), #000 calc(100% - var(--fade)), transparent 100%),
-    linear-gradient(to bottom, transparent 0, #000 var(--fade), #000 calc(100% - var(--fade)), transparent 100%);
+  --fade: 0%; --edge: 0%; transition: --fade 700ms ease, --edge 700ms ease;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, transparent var(--edge), #000 var(--fade), #000 calc(100% - var(--fade)), transparent calc(100% - var(--edge)), transparent 100%),
+    linear-gradient(to bottom, transparent 0, transparent var(--edge), #000 var(--fade), #000 calc(100% - var(--fade)), transparent calc(100% - var(--edge)), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, transparent var(--edge), #000 var(--fade), #000 calc(100% - var(--fade)), transparent calc(100% - var(--edge)), transparent 100%),
+    linear-gradient(to bottom, transparent 0, transparent var(--edge), #000 var(--fade), #000 calc(100% - var(--fade)), transparent calc(100% - var(--edge)), transparent 100%);
   -webkit-mask-composite: source-in; mask-composite: intersect;
   box-shadow: 0 40px 60px -40px rgba(60, 35, 15, 0.5); }
 .gw-media video { display: block; width: 100%; height: 100%; object-fit: cover; }
-.gw-card[data-mid] { transform: scale(1.08); }
-.gw-card[data-mid] .gw-media { --fade: 16%; box-shadow: none; }
+/* the middle one zooms in and melts: fully clear for the outer 3% (no edge line), soft up to 24% */
+.gw-card { position: relative; z-index: 1; }
+.gw-card[data-mid] { transform: scale(1.28); z-index: 2; }
+.gw-card[data-mid] .gw-media { --fade: 24%; --edge: 3%; box-shadow: none; clip-path: inset(3px); } /* the browser leaves a 1px line on the edge of a scaled video */
+.gw-card[data-mid] :is(.gw-name, .gw-by) { transform: scale(0.78); transform-origin: top center; }
+.gw-card[data-mid] .gw-name { margin-top: 2px; }
 .gw-card:not([data-mid]) { opacity: 0.92; }
 .gw-card:not([data-mid]):hover { transform: translateY(-8px); }
 .gw .gw-card { opacity: 0; }
