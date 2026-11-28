@@ -52,7 +52,8 @@
 .afo button:focus-visible, .camp a:focus-visible { outline: 2px solid #e07a1f; outline-offset: 3px; }
 
 /* the camp */
-.camp { max-width: 1120px; margin: 0 auto; padding: 0 22px clamp(96px, 12vw, 160px); }
+.camp { max-width: 1120px; margin: 0 auto; padding: 0 22px; }
+.mp > .mp-sec:last-child { padding-bottom: clamp(96px, 12vw, 160px); }
 .camp-top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 32px; margin-bottom: 28px; }
 .camp-name { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(28px, 3.2vw, 40px); line-height: 1.1; }
 .camp-name span { color: var(--st-sub); font-weight: 600; }
