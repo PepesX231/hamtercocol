@@ -9,6 +9,8 @@ import { img } from "@/lib/site";
  * The others stand as spines on the shelf; the chosen one slides to the middle and turns to face out, its cover
  * filled with the work (the clip plays on it) and a small label: "All for One University 2026" and the name.
  * Owner, 28 พ.ย. (2nd pass): the work full on the cover instead of an opening book, and a full shelf (mocks for now).
+ * Owner, 28 พ.ย. (3rd pass): the shelf full from edge to edge, and the book opens like a book: its cover board and two
+ * pages swing open from the spine to show the work.
  * Smaller than Thailand Game Show on purpose. It moves on by itself, stops off screen, can be paused,
  * and stays still for reduced-motion users.
  */
@@ -17,6 +19,7 @@ const LIGHT = new Set(["#ffd84d", "#7aa7f0", "#e8dccb", "#f29a4a", "#f4ead9"]);
 const TALL = [0.96, 0.86, 1.04, 0.9, 1, 0.82, 0.94, 1.08, 0.88, 0.98];
 const THICK = [1, 0.8, 1.25, 0.9, 1.1, 0.75, 1, 1.35, 0.85, 1.05];
 const EVENT = "All for One University 2026";
+const FILL = 16; // plain books on each end so the shelf runs from edge to edge (owner, 28 พ.ย.: "เต็มซ้ายขวา")
 
 export function BookShelf({ works }: { works: Work[] }) {
   const n = works.length;
@@ -57,19 +60,22 @@ export function BookShelf({ works }: { works: Work[] }) {
     }
   }, [seen, paused, at, w, n, go]);
 
-  // how many spine-widths sit between a spine and the cover (spines have different thicknesses)
-  const off = (k: number) => {
+  // the shelf: plain books, the works, plain books; positions count spine thicknesses out from the book in the middle
+  const items: (Work | null)[] = [...Array(FILL).fill(null), ...works, ...Array(FILL).fill(null)];
+  const mid = at + FILL;
+  const off = (v: number) => {
     let x = 0;
-    if (k < at) for (let j = k + 1; j < at; j++) x += THICK[j % THICK.length];
-    else for (let j = at + 1; j < k; j++) x += THICK[j % THICK.length];
+    if (v < mid) for (let j = v + 1; j < mid; j++) x += THICK[j % THICK.length];
+    else for (let j = mid + 1; j < v; j++) x += THICK[j % THICK.length];
     return x;
   };
 
   return (
     <div ref={box} className="bs">
       <div className="bs-shelf">
-        {works.map((item, k) => {
-          if (k === at) {
+        {items.map((item, v) => {
+          const c = SPINE[v % SPINE.length];
+          if (v === mid && item) {
             return (
               <div key={item.id} className="bs-book">
                 <div className="bs-cover" data-mock={item.mock || undefined}>
@@ -93,23 +99,24 @@ export function BookShelf({ works }: { works: Work[] }) {
                     <p className="bs-t">{item.name}</p>
                   </div>
                 </div>
+                {/* the book opening: two pages, then the cover board on top, all swinging open from the spine */}
+                <span className="bs-leaf l2" aria-hidden="true" />
+                <span className="bs-leaf l1" aria-hidden="true" />
+                <span className="bs-lid" aria-hidden="true" style={{ "--c": c } as React.CSSProperties}>
+                  <span>All for One</span>
+                </span>
               </div>
             );
           }
-          const c = SPINE[k % SPINE.length];
+          const style = {
+            "--side": v < mid ? -1 : 1, "--neg": v < mid ? 1 : 0, "--x": off(v),
+            "--c": c, "--h": TALL[v % TALL.length], "--t": THICK[v % THICK.length],
+          } as React.CSSProperties;
+          if (!item) return <span key={`f${v}`} className="bs-spine bs-fill" aria-hidden="true" data-light={LIGHT.has(c) || undefined} style={style}><span>All for One</span></span>;
+          const k = v - FILL;
           return (
-            <button
-              key={item.id}
-              type="button"
-              className="bs-spine"
-              onClick={() => go(k)}
-              aria-label={`ดู ${item.name}`}
-              data-light={LIGHT.has(c) || undefined}
-              style={{
-                "--side": k < at ? -1 : 1, "--neg": k < at ? 1 : 0, "--x": off(k),
-                "--c": c, "--h": TALL[k % TALL.length], "--t": THICK[k % THICK.length],
-              } as React.CSSProperties}
-            >
+            <button key={item.id} type="button" className="bs-spine" onClick={() => go(k)} aria-label={`ดู ${item.name}`}
+              data-light={LIGHT.has(c) || undefined} style={style}>
               <span>{item.mock ? "All for One" : item.name}</span>
             </button>
           );
