@@ -110,7 +110,7 @@ To add words, extend `INTENTS` in `lib/understand.ts`, then run `harness.js`. Th
 ## 5. What the site looks like now
 
 **Home, in order (owner, 28 พ.ย., after พี่อุ้ย's review clip):**
-1. **3D map** (น้องไอดิน's app, in the site's colours; the owner calls it "TCAS 2026"), title "2026 every**Ham's**Projects". Replaced the hero and its search bar.
+1. **3D map** (น้องไอดิน's app, in the site's colours), title "TCAS **2026**" with the line "รุ่นพี่ปี 69 ติดมหาลัยแล้ว 48 คน ↓", which jumps to that section (`#tcas`, set in `legacy_next.py`; `components/JumpLink.tsx` re-aims because the partners block above shrinks after its animation). Replaced the hero and its search bar.
 2. **กิจกรรม**: Portfolio Camp for TCAS 1 card (the current activity; All for One has just ended). Was "เข้าร่วมกับ Hamster Hub" at the bottom until 28 พ.ย.
 3. **Thailand Game Show**: clip row starting with RE//SLASH.
 4. **All for One**: clip row of All for One University works (only SmartParkin' so far; more from the team).

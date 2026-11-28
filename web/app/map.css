@@ -11,10 +11,14 @@
   /* when the map is zoomed in, land reaches the frame's edges: let it fade out there instead of stopping on a line */
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 36px, #000 calc(100% - 110px), transparent 100%);
   mask-image: linear-gradient(to bottom, transparent 0, #000 36px, #000 calc(100% - 110px), transparent 100%); }
-.mp-title { position: absolute; top: clamp(18px, 3.2vh, 34px); left: 0; right: 0; margin: 0; padding: 0 16px; text-align: center; pointer-events: none;
-  font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 3.4vw, 46px); letter-spacing: -0.015em; line-height: 1.1;
-  color: var(--st-ink); }
+.mp-title { position: absolute; top: clamp(18px, 3.2vh, 34px); left: 0; right: 0; padding: 0 16px; text-align: center; pointer-events: none; }
+.mp-title h1 { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 4vw, 56px); letter-spacing: -0.015em;
+  line-height: 1.05; color: var(--st-ink); }
 .mp-title i { font-style: normal; color: #b4541a; }
+.mp-title a { pointer-events: auto; display: inline-block; margin-top: 8px; font-size: clamp(15px, 1.4vw, 19px); font-weight: 600;
+  color: var(--st-link); text-decoration: none; }
+.mp-title a:hover { text-decoration: underline; }
+#tcas { scroll-margin-top: 60px; }
 
 /* sections */
 .mp-sec { padding: clamp(72px, 10vw, 132px) 0 0; }

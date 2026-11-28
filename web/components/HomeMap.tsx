@@ -1,9 +1,11 @@
 import { AutoVideo } from "@/components/AutoVideo";
+import { JumpLink } from "@/components/JumpLink";
 import { MapFrame } from "@/components/MapFrame";
 import { ClipStage } from "@/components/map/ClipStage";
 import { ALL_FOR_ONE, CAMP, GAME_SHOW, SECTIONS } from "@/lib/map";
 
-// Top of the home page (28 พ.ย., owner after พี่อุ้ย's review): the 3D map (TCAS 2026), then the current activity
+// Top of the home page (28 พ.ย., owner after พี่อุ้ย's review): the 3D map under "TCAS 2026" (its line links to
+// the seniors' section "รุ่นพี่ปี 69 ติดมหาลัยแล้ว" further down), then the current activity
 // under "กิจกรรม" (Portfolio Camp for TCAS 1, which replaces All for One now that it has ended), then
 // Thailand Game Show and All for One.
 // The map is น้องไอดิน's app, built into /hamtercocol/map-app/ by dev/builds/map_app.py and shown in an iframe.
@@ -12,7 +14,10 @@ export function HomeMap() {
     <div className="mp">
       <section className="mp-map" aria-label="แผนที่ผลงาน">
         <MapFrame />
-        <h1 className="mp-title">2026 every<i>Ham&apos;s</i>Projects</h1>
+        <div className="mp-title">
+          <h1>TCAS <i>2026</i></h1>
+          <JumpLink to="tcas">รุ่นพี่ปี 69 ติดมหาลัยแล้ว 48 คน <span aria-hidden="true">↓</span></JumpLink>
+        </div>
       </section>
 
       <section id="join" className="mp-sec" aria-labelledby="join-h">
