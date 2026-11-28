@@ -9,8 +9,8 @@ import { img } from "@/lib/site";
  * The others stand as spines on the shelf; the chosen one slides to the middle and turns to face out, its cover
  * filled with the work (the clip plays on it) and a small label: "All for One University 2026" and the name.
  * Owner, 28 พ.ย. (2nd pass): the work full on the cover instead of an opening book, and a full shelf (mocks for now).
- * Owner, 28 พ.ย. (3rd pass): the shelf full from edge to edge, and the book opens like a book: its cover board and two
- * pages swing open from the spine to show the work.
+ * Owner, 28 พ.ย. (3rd pass): the shelf full from edge to edge. A book-opening animation was tried and dropped
+ * (owner: the first one, the spine turning to face out, is better).
  * Smaller than Thailand Game Show on purpose. It moves on by itself, stops off screen, can be paused,
  * and stays still for reduced-motion users.
  */
@@ -99,12 +99,6 @@ export function BookShelf({ works }: { works: Work[] }) {
                     <p className="bs-t">{item.name}</p>
                   </div>
                 </div>
-                {/* the book opening: two pages, then the cover board on top, all swinging open from the spine */}
-                <span className="bs-leaf l2" aria-hidden="true" />
-                <span className="bs-leaf l1" aria-hidden="true" />
-                <span className="bs-lid" aria-hidden="true" style={{ "--c": c } as React.CSSProperties}>
-                  <span>All for One</span>
-                </span>
               </div>
             );
           }
