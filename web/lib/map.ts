@@ -1,6 +1,6 @@
 import { img } from "./site";
 
-// Data for the top of the home page (map, Thailand Game Show, All for One, เข้าร่วมกับ Hamster Hub). Only facts we can point to:
+// Data for the top of the home page (map, กิจกรรม, Thailand Game Show, All for One). Only facts we can point to:
 // - names and makers: the map's review data (hamsterhub-hall-of-fame-map, public/__local-preview/data.json)
 // - awards: the team sheet (TGGS 2026 Top 12 for RE//SLASH) and the owner (depa 2026 winner for Apocalypis Building)
 // - camp: the Portfolio Camp page (github.com/PepesX231/PortfolioCamp)
@@ -9,7 +9,8 @@ import { img } from "./site";
 export const MAP_APP = "/hamtercocol/map-app/?embed";
 
 // mapProject: the same work's id in the 3D map's data, so a student card on the map can jump here.
-export type Work = { id: string; name: string; by: string; award?: string; clip: string; poster: string; mapProject?: string };
+// mock: a stand-in until the team sends the work (the owner, 28 พ.ย.); shown as a plain All for One card, no clip.
+export type Work = { id: string; name: string; by: string; award?: string; clip?: string; poster?: string; mapProject?: string; mock?: boolean };
 
 // Thailand Game Show (the owner, 27 พ.ย.: this row is the Game Show works)
 export const GAME_SHOW: Work[] = [
@@ -20,9 +21,12 @@ export const GAME_SHOW: Work[] = [
   { id: "lasthost", name: "The Last Host", by: "น้องปัณณ์", clip: img("afo-lasthost.mp4"), poster: img("afo-lasthost.webp"), mapProject: "project-the-last-host" },
 ];
 
-// All for One University: only SmartParkin' is marked All for One in the map data so far. More works and clips from the team.
+// All for One University: only SmartParkin' is marked All for One in the map data so far. The owner (28 พ.ย.) asked for
+// mock cards for the rest until the team sends them; replace each mock with the real work (name, maker, clip, poster).
+const AFO_MOCK = (k: number): Work => ({ id: `afo-mock-${k}`, name: "ผลงานถัดไป", by: "รอคลิปจากทีม", mock: true });
 export const ALL_FOR_ONE: Work[] = [
   { id: "smartparkin", name: "SmartParkin'", by: "น้องปันปัน", clip: img("afo-smartparkin.mp4"), poster: img("afo-smartparkin.webp"), mapProject: "project-smartparkin" },
+  AFO_MOCK(1), AFO_MOCK(2), AFO_MOCK(3),
 ];
 
 // Sections of the home page the map can send visitors to (see components/MapFrame.tsx).

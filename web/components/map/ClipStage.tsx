@@ -2,6 +2,17 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Work } from "@/lib/map";
+import { img } from "@/lib/site";
+
+// a work the team has not sent yet: the All for One logo on its own, no clip
+function Mock() {
+  return (
+    <div className="afo-mock" aria-hidden="true">
+      <img src={img("k-afo-logo.webp")} alt="" />
+      <span>เร็วๆ นี้</span>
+    </div>
+  );
+}
 
 /*
  * A row of work clips on the home page (Thailand Game Show, All for One): one big clip in the middle, the ones
@@ -45,7 +56,14 @@ export function ClipStage({ works }: { works: Work[] }) {
     else v.pause();
   }, [at, seen, paused]);
 
+  // a mock card has no clip to end, so it moves on after a few seconds
   const w = works[at];
+  useEffect(() => {
+    if (w.clip || n < 2 || !seen || paused) return;
+    const t = setTimeout(() => go(at + 1), 4000);
+    return () => clearTimeout(t);
+  }, [w, n, at, seen, paused, go]);
+
   return (
     <div ref={box} className="afo">
       <div
@@ -70,7 +88,9 @@ export function ClipStage({ works }: { works: Work[] }) {
               data-far={Math.abs(off) > 1 || undefined}
               style={{ "--off": off } as React.CSSProperties}
             >
-              {mid ? (
+              {mid && !item.clip ? (
+                <Mock />
+              ) : mid ? (
                 <video
                   ref={video}
                   src={item.clip}
@@ -80,11 +100,11 @@ export function ClipStage({ works }: { works: Work[] }) {
                   loop={n < 2}
                   preload="auto"
                   onEnded={() => { if (!paused) go(at + 1); }}
-                  aria-label={`คลิป ${item.name} โดย${item.by}`}
+                  aria-label={`คลิป ${item.name} โดย ${item.by}`}
                 />
               ) : (
                 <button type="button" tabIndex={Math.abs(off) === 1 ? 0 : -1} onClick={() => go(k)} aria-label={`ดู ${item.name}`}>
-                  <img src={item.poster} alt="" loading="lazy" />
+                  {item.poster ? <img src={item.poster} alt="" loading="lazy" /> : <Mock />}
                 </button>
               )}
             </div>

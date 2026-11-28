@@ -111,11 +111,11 @@ To add words, extend `INTENTS` in `lib/understand.ts`, then run `harness.js`. Th
 
 **Home, in order (owner, 28 พ.ย., after พี่อุ้ย's review clip):**
 1. **3D map** (น้องไอดิน's app, in the site's colours), title "TCAS **2026**" with the line "รุ่นพี่ปี 69 ติดมหาลัยแล้ว 48 คน ↓", which jumps to that section (`#tcas`, set in `legacy_next.py`; `components/JumpLink.tsx` re-aims because the partners block above shrinks after its animation). Replaced the hero and its search bar.
-2. **กิจกรรม**: Portfolio Camp for TCAS 1 card (the current activity; All for One has just ended). Was "เข้าร่วมกับ Hamster Hub" at the bottom until 28 พ.ย.
+2. **กิจกรรม**: Portfolio Camp for TCAS 1 as an orange banner in the style of the old All for One banner (the current activity; All for One has just ended). Was "เข้าร่วมกับ Hamster Hub" at the bottom until 28 พ.ย.
 3. **Thailand Game Show**: clip row starting with RE//SLASH.
-4. **All for One**: clip row of All for One University works (only SmartParkin' so far; more from the team).
-5. กิจกรรมล่าสุด, จัดกิจกรรมร่วมกับ, "รุ่นพี่ปี 69 ติดมหาลัยแล้ว 48 คน" (moved down), สร้างอนาคตไปด้วยกัน (light), footer.
-- **Removed from home:** Hall of Fame (the awards list stays on /works/), "สิ่งที่ Hamster Hub สร้าง", the Route shelf (Routes stay on /routes/), and for now the Packages shelf (28 พ.ย.; `components/HomeStore.tsx` is kept).
+4. **All for One**: clip row of All for One University works. Only SmartParkin' is real; the owner asked (28 พ.ย.) for 3 mock cards ("ผลงานถัดไป · รอคลิปจากทีม", All for One logo, no clip) until the team sends the rest. Replace them in `lib/map.ts`.
+5. จัดกิจกรรมร่วมกับ, "รุ่นพี่ปี 69 ติดมหาลัยแล้ว 48 คน" (moved down), สร้างอนาคตไปด้วยกัน (light), footer.
+- **Removed from home:** กิจกรรมล่าสุด (the old All for One banner, 28 พ.ย.), Hall of Fame (the awards list stays on /works/), "สิ่งที่ Hamster Hub สร้าง", the Route shelf (Routes stay on /routes/), and for now the Packages shelf (28 พ.ย.; `components/HomeStore.tsx` is kept).
 - The map's "i" (data credits) button is hidden on the site; the footer links "เครดิตแผนที่" to `map-app/credits.txt` (CC BY needs the credit). The map's top and bottom edges fade out so zoomed-in land never stops on a line.
 
 **Hams Route (`/routes/`):**

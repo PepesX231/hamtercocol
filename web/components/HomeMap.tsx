@@ -23,26 +23,26 @@ export function HomeMap() {
       <section id="join" className="mp-sec" aria-labelledby="join-h">
         <h2 id="join-h" className="mp-h">กิจกรรม</h2>
         <div className="camp">
-          <div className="camp-top">
-            <div>
-              <p className="camp-name">{CAMP.name} <span>for {CAMP.for}</span></p>
-              <p className="camp-meta">{CAMP.when} · {CAMP.where}</p>
-            </div>
+          <div className="camp-l">
+            <p className="camp-k">เปิดรับสมัคร</p>
+            <h3 className="camp-name">{CAMP.name}<br />for {CAMP.for}</h3>
+            <p className="camp-meta">{CAMP.when} · {CAMP.where}</p>
+            <ul className="camp-tracks">
+              {CAMP.tracks.map((t) => (
+                <li key={t.name}><b>{t.name}</b> {t.have} <span aria-hidden="true">→</span><span className="sr-only">ได้</span> {t.get}</li>
+              ))}
+            </ul>
             <div className="camp-buy">
+              <a className="camp-btn" href={CAMP.apply} target="_blank" rel="noopener">สมัครค่าย</a>
               <p className="camp-price">{CAMP.price}</p>
-              <a className="st-btn st-btn-main" href={CAMP.apply} target="_blank" rel="noopener">สมัครค่าย</a>
             </div>
           </div>
-          <div className="camp-tracks">
-            {CAMP.tracks.map((t) => (
-              <div key={t.name} className="camp-track">
-                <div className="camp-media">
-                  {"clip" in t.media
-                    ? <AutoVideo src={t.media.clip} poster={t.media.img} aria-label={`คลิปเกม ${t.name}`} />
-                    : <img src={t.media.img} alt={`ตัวอย่างพอร์ต ${t.name}`} />}
-                </div>
-                <p className="camp-tn">{t.name}</p>
-                <p className="camp-td">{t.have} <span aria-hidden="true">→</span><span className="sr-only">ได้</span> {t.get}</p>
+          <div className="camp-art">
+            {CAMP.tracks.map((t, k) => (
+              <div key={t.name} className={`camp-media m${k}`}>
+                {"clip" in t.media
+                  ? <AutoVideo src={t.media.clip} poster={t.media.img} aria-label={`คลิปเกม ${t.name}`} />
+                  : <img src={t.media.img} alt={`ตัวอย่างพอร์ต ${t.name}`} />}
               </div>
             ))}
           </div>
