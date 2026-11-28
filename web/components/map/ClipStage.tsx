@@ -117,11 +117,8 @@ export function ClipStage({ works }: { works: Work[] }) {
 
       <div className="afo-cap" aria-live="polite">
         <div key={w.id} className="afo-cap-in">
-          {n > 1 && <p className="afo-no" aria-hidden="true">{String(at + 1).padStart(2, "0")}<span>/{String(n).padStart(2, "0")}</span></p>}
-          <div>
-            <p className="afo-name">{w.name}</p>
-            <p className="afo-by">{w.by}{w.award ? <> · <b>{w.award}</b></> : null}</p>
-          </div>
+          <p className="afo-name">{w.name}</p>
+          <p className="afo-by">{w.by}{w.award ? <> · <b>{w.award}</b></> : null}</p>
         </div>
       </div>
 

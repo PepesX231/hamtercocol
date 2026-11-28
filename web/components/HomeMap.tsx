@@ -4,7 +4,7 @@ import { MapFrame } from "@/components/MapFrame";
 import { ClipStage } from "@/components/map/ClipStage";
 import { ALL_FOR_ONE, CAMP, GAME_SHOW, SECTIONS } from "@/lib/map";
 
-// Top of the home page (28 พ.ย., owner after พี่อุ้ย's review): the 3D map under "TCAS 2026" (its line links to
+// Top of the home page (28 พ.ย., owner after พี่อุ้ย's review): the 3D map under "2026 every Ham's Projects" (its TCAS line links to
 // the seniors' section "รุ่นพี่ปี 69 ติดมหาลัยแล้ว" further down), then the current activity
 // under "กิจกรรม" (Portfolio Camp for TCAS 1, which replaces All for One now that it has ended), then
 // Thailand Game Show and All for One.
@@ -15,7 +15,7 @@ export function HomeMap() {
       <section className="mp-map" aria-label="แผนที่ผลงาน">
         <MapFrame />
         <div className="mp-title">
-          <h1>TCAS <i>2026</i></h1>
+          <h1>2026 every<i>Ham<span>&apos;s</span></i>Projects</h1>
           <JumpLink to="tcas">รุ่นพี่ปี 69 ติดมหาลัยแล้ว 48 คน <span aria-hidden="true">↓</span></JumpLink>
         </div>
       </section>

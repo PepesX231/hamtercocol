@@ -15,6 +15,7 @@
 .mp-title h1 { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 4vw, 56px); letter-spacing: -0.015em;
   line-height: 1.05; color: var(--st-ink); }
 .mp-title i { font-style: normal; color: #b4541a; }
+.mp-title i span { color: #fff; text-shadow: 0 1px 2px rgba(120, 52, 10, 0.55), 0 0 1px rgba(120, 52, 10, 0.6); } /* owner: the 's in white */
 .mp-title a { pointer-events: auto; display: inline-block; margin-top: 8px; font-size: clamp(15px, 1.4vw, 19px); font-weight: 600;
   color: var(--st-link); text-decoration: none; }
 .mp-title a:hover { text-decoration: underline; }
@@ -42,13 +43,10 @@
 .afo-item button { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
 .afo-item:not([data-mid]):hover { opacity: 0.85; }
 
-/* caption: big number, name and maker; slides up when the work changes */
+/* caption: name and maker; slides up when the work changes */
 .afo-cap { width: var(--w); margin: 34px auto 0; min-height: 72px; display: flex; justify-content: center; }
-.afo-cap-in { display: flex; align-items: center; gap: 22px; animation: afo-in 600ms cubic-bezier(0.2, 0.85, 0.2, 1) both; }
+.afo-cap-in { text-align: center; animation: afo-in 600ms cubic-bezier(0.2, 0.85, 0.2, 1) both; }
 @keyframes afo-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-.afo-no { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(40px, 4.6vw, 64px); line-height: 1; color: #c8561b;
-  letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
-.afo-no span { font-size: 0.34em; color: var(--st-sub); letter-spacing: 0; margin-left: 4px; }
 .afo-name { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(22px, 2.4vw, 32px); line-height: 1.15; }
 .afo-by { margin: 4px 0 0; color: var(--st-sub); font-size: 16px; }
 .afo-by b { color: var(--st-link); font-weight: 600; }
