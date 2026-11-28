@@ -2,55 +2,45 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Work } from "@/lib/map";
-import { img } from "@/lib/site";
-
-// a work the team has not sent yet: the All for One logo on its own, no clip
-function Mock() {
-  return (
-    <div className="afo-mock" aria-hidden="true">
-      <img src={img("k-afo-logo.webp")} alt="" />
-      <span>เร็วๆ นี้</span>
-    </div>
-  );
-}
 
 /*
- * A row of work clips on the home page (Thailand Game Show, All for One): one big clip in the middle, the ones
- * before and after turned away in 3D at the edges (cover flow; owner, 28 พ.ย.: "เฟี้ยวๆ"). The bars under it fill as
- * the clip plays. Each clip plays once (muted) and the next slides in; RE//SLASH first,
- * as พี่ฮิว asked. It stops off screen, can be paused (it moves on its own), and stays still for reduced-motion users.
- * Tap a side clip, a square under it, or swipe to choose. With one work it simply loops.
+ * Thailand Game Show (owner, 28 พ.ย.: "เท่กว่านี้อีกเยอะ", and not the same as All for One): one big clip in the middle
+ * that tilts toward the pointer, the clips before and after resting at the sides behind a cream wash, a wipe when the
+ * clip changes, the name on a square white label over the clip, and a filmstrip of all the games under it whose bar
+ * fills as the clip plays. RE//SLASH first, as พี่ฮิว asked. Each clip plays once (muted) and the next comes in.
+ * It stops off screen, can be paused, and stays still for reduced-motion users. Swipe or tap a frame to choose.
  */
 export function ClipStage({ works }: { works: Work[] }) {
   const n = works.length;
   const [at, setAt] = useState(0);
   const [paused, setPaused] = useState(false);
   const [seen, setSeen] = useState(false);
-  const [prog, setProg] = useState(0); // how far the middle clip has played, 0..1 (drives the bar under it)
+  const [prog, setProg] = useState(0);
   const box = useRef<HTMLDivElement>(null);
+  const mid = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const swipe = useRef<number | null>(null);
+  const still = useRef(false);
 
   const go = useCallback((i: number) => { setAt(((i % n) + n) % n); setProg(0); }, [n]);
 
-  // the map's student cards can ask to show one work here (components/MapFrame.tsx)
   useEffect(() => {
     const show = (e: Event) => {
       const k = works.findIndex((w) => w.mapProject && w.mapProject === (e as CustomEvent<{ project?: string }>).detail?.project);
-      if (k >= 0) { setAt(k); setPaused(false); }
+      if (k >= 0) { go(k); setPaused(false); }
     };
     window.addEventListener("hh-show", show);
     return () => window.removeEventListener("hh-show", show);
-  }, [works]);
+  }, [works, go]);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setPaused(true);
+    still.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (still.current) setPaused(true);
     const io = new IntersectionObserver(([e]) => setSeen(e.isIntersecting), { threshold: 0.35 });
     if (box.current) io.observe(box.current);
     return () => io.disconnect();
   }, []);
 
-  // play the middle clip from the start whenever it changes; stop it when paused or off screen
   useEffect(() => {
     const v = video.current;
     if (!v) return;
@@ -58,18 +48,21 @@ export function ClipStage({ works }: { works: Work[] }) {
     else v.pause();
   }, [at, seen, paused]);
 
-  // a mock card has no clip to end, so it moves on after a few seconds
-  const w = works[at];
-  useEffect(() => {
-    if (w.clip || n < 2 || !seen || paused) return;
-    const t = setTimeout(() => go(at + 1), 4000);
-    return () => clearTimeout(t);
-  }, [w, n, at, seen, paused, go]);
+  // the middle clip leans toward the pointer (a few degrees)
+  const tilt = (e: React.PointerEvent) => {
+    const el = mid.current;
+    if (!el || still.current || e.pointerType !== "mouse") return;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty("--rx", `${((e.clientY - r.top) / r.height - 0.5) * -5}deg`);
+    el.style.setProperty("--ry", `${((e.clientX - r.left) / r.width - 0.5) * 7}deg`);
+  };
+  const untilt = () => { mid.current?.style.setProperty("--rx", "0deg"); mid.current?.style.setProperty("--ry", "0deg"); };
 
+  const w = works[at];
   return (
-    <div ref={box} className="afo">
+    <div ref={box} className="gs">
       <div
-        className="afo-stage"
+        className="gs-stage"
         onPointerDown={(e) => { swipe.current = e.clientX; }}
         onPointerUp={(e) => {
           if (swipe.current === null || n < 2) return;
@@ -81,20 +74,14 @@ export function ClipStage({ works }: { works: Work[] }) {
         {works.map((item, k) => {
           let off = (((k - at) % n) + n) % n;
           if (off > n / 2) off -= n;
-          const mid = off === 0;
-          return (
-            <div
-              key={item.id}
-              className="afo-item"
-              data-mid={mid || undefined}
-              data-far={Math.abs(off) > 1 || undefined}
-              style={{ "--off": off } as React.CSSProperties}
-            >
-              {mid && !item.clip ? (
-                <Mock />
-              ) : mid ? (
+          if (off === 0) {
+            return (
+              <div key={item.id} ref={mid} className="gs-item" data-mid style={{ "--off": 0 } as React.CSSProperties}
+                onPointerMove={tilt} onPointerLeave={untilt}>
                 <video
+                  key={`${item.id}-${at}`}
                   ref={video}
+                  className="gs-wipe"
                   src={item.clip}
                   poster={item.poster}
                   muted
@@ -105,38 +92,33 @@ export function ClipStage({ works }: { works: Work[] }) {
                   onTimeUpdate={(e) => { const v = e.currentTarget; if (v.duration) setProg(v.currentTime / v.duration); }}
                   aria-label={`คลิป ${item.name} โดย ${item.by}`}
                 />
-              ) : (
-                <button type="button" tabIndex={Math.abs(off) === 1 ? 0 : -1} onClick={() => go(k)} aria-label={`ดู ${item.name}`}>
-                  {item.poster ? <img src={item.poster} alt="" loading="lazy" /> : <Mock />}
-                </button>
-              )}
+                <div key={`l-${item.id}-${at}`} className="gs-label">
+                  {item.award && <p className="gs-award">{item.award}</p>}
+                  <p className="gs-name">{item.name}</p>
+                  <p className="gs-by">{item.by}</p>
+                </div>
+              </div>
+            );
+          }
+          return (
+            <div key={item.id} className="gs-item" data-far={Math.abs(off) > 1 || undefined} style={{ "--off": off } as React.CSSProperties}>
+              <button type="button" tabIndex={-1} onClick={() => go(k)} aria-hidden="true">
+                <img src={item.poster} alt="" loading="lazy" />
+              </button>
             </div>
           );
         })}
       </div>
-
-      <div className="afo-cap" aria-live="polite">
-        <div key={w.id} className="afo-cap-in">
-          <p className="afo-name">{w.name}</p>
-          <p className="afo-by">{w.by}{w.award ? <> · <b>{w.award}</b></> : null}</p>
-        </div>
-      </div>
+      <p className="sr-only" aria-live="polite">{w.name} โดย {w.by}{w.award ? ` ${w.award}` : ""}</p>
 
       {n > 1 && (
-        <div className="afo-ctl">
-          <div className="afo-dots" role="group" aria-label="เลือกผลงาน">
+        <div className="gs-strip">
+          <div className="gs-frames" role="group" aria-label="เลือกเกม">
             {works.map((item, k) => (
-              <button
-                key={k === at ? `${item.id}-${at}` : item.id}
-                type="button"
-                aria-label={item.name}
-                aria-current={k === at || undefined}
-                data-done={k < at || undefined}
-                data-mock={(k === at && !item.clip) || undefined}
-                data-paused={paused || !seen || undefined}
-                style={k === at && item.clip ? ({ "--p": prog } as React.CSSProperties) : undefined}
-                onClick={() => go(k)}
-              />
+              <button key={item.id} type="button" className="gs-frame" aria-label={item.name} aria-current={k === at || undefined} onClick={() => go(k)}>
+                <img src={item.poster} alt="" loading="lazy" />
+                <span className="gs-bar" style={k === at ? ({ "--p": prog } as React.CSSProperties) : undefined} />
+              </button>
             ))}
           </div>
           <button type="button" className="afo-play" onClick={() => setPaused((p) => !p)} aria-label={paused ? "เล่นต่อ" : "หยุด"}>

@@ -22,11 +22,12 @@ export const GAME_SHOW: Work[] = [
 ];
 
 // All for One University: only SmartParkin' is marked All for One in the map data so far. The owner (28 พ.ย.) asked for
-// mock cards for the rest until the team sends them; replace each mock with the real work (name, maker, clip, poster).
+// mock cards for the rest until the team sends them, enough to fill the shelf (the real work sits in the middle); replace each mock with the real work (name, maker, clip, poster).
 const AFO_MOCK = (k: number): Work => ({ id: `afo-mock-${k}`, name: "ผลงานถัดไป", by: "รอคลิปจากทีม", mock: true });
 export const ALL_FOR_ONE: Work[] = [
+  AFO_MOCK(1), AFO_MOCK(2), AFO_MOCK(3), AFO_MOCK(4),
   { id: "smartparkin", name: "SmartParkin'", by: "น้องปันปัน", clip: img("afo-smartparkin.mp4"), poster: img("afo-smartparkin.webp"), mapProject: "project-smartparkin" },
-  AFO_MOCK(1), AFO_MOCK(2), AFO_MOCK(3),
+  AFO_MOCK(5), AFO_MOCK(6), AFO_MOCK(7), AFO_MOCK(8), AFO_MOCK(9),
 ];
 
 // Sections of the home page the map can send visitors to (see components/MapFrame.tsx).

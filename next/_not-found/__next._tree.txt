@@ -5,4 +5,4 @@
 :HL["/hamtercocol/next/legacy/manifest.json","fetch",{"crossOrigin":"anonymous"}]
 2:[["children",{"s":"__PAGE__","h":160}]]
 1:[["children",{"s":"_not-found","h":64,"c":"$Q2"}]]
-0:{"b":"ymRP2SLn5BK59at9CRrsa","t":{"t":{"s":"","h":16,"c":"$Q1"}}}
+0:{"b":"WAKwqLKgPxwcGbh_ZblVs","t":{"t":{"s":"","h":16,"c":"$Q1"}}}

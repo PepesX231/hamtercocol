@@ -26,97 +26,93 @@
 .mp-h { margin: 0 0 clamp(28px, 4vw, 48px); text-align: center; font-family: var(--font-display); font-weight: 700;
   font-size: clamp(36px, 5.6vw, 72px); line-height: 1.04; letter-spacing: -0.02em; }
 
-/* work rows (Thailand Game Show, All for One): cover flow, one clip in the middle, the others turned away in 3D */
-.afo { --w: min(1040px, 74vw); --step: calc(var(--w) * 0.62); }
-@media (max-width: 720px) { .afo { --w: 84vw; --step: calc(var(--w) * 0.7); } }
-/* clip only sideways (the side clips leave the screen); up and down stay open so the shadow fades out by itself */
-.afo-stage { position: relative; height: calc(var(--w) * 9 / 16); touch-action: pan-y; overflow-x: clip; overflow-y: visible;
-  perspective: 1600px; perspective-origin: 50% 50%; }
-.afo-item { position: absolute; top: 0; left: 50%; width: var(--w); aspect-ratio: 16 / 9; background: var(--st-dark);
-  transform: translateX(calc(-50% + var(--off) * var(--step))) translateZ(-260px) rotateY(calc(var(--off) * -38deg));
-  opacity: 0.62; z-index: 1; transition: transform 800ms cubic-bezier(0.2, 0.85, 0.2, 1), opacity 800ms ease; will-change: transform;
-  box-shadow: 0 30px 50px -36px rgba(29, 23, 18, 0.55); }
-.afo-item[data-mid] { transform: translateX(-50%) translateZ(0) rotateY(0deg); opacity: 1; z-index: 2;
-  box-shadow: 0 50px 80px -46px rgba(29, 23, 18, 0.75); }
-.afo-item[data-far] { opacity: 0; pointer-events: none; }
-.afo-item video, .afo-item img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.afo-item button { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
-.afo-item:not([data-mid]):hover { opacity: 0.85; }
+/* Thailand Game Show (components/map/ClipStage.tsx): big clip, sides behind a cream wash, tilt, wipe, square label, filmstrip */
+.gs { --w: min(1180px, 80vw); }
+@media (max-width: 720px) { .gs { --w: 88vw; } }
+.gs-stage { position: relative; height: calc(var(--w) * 9 / 16); touch-action: pan-y; overflow-x: clip; overflow-y: visible; perspective: 1400px; }
+.gs-item { position: absolute; top: 0; left: 50%; width: var(--w); aspect-ratio: 16 / 9; background: var(--st-dark);
+  transform: translateX(calc(-50% + var(--off) * var(--w) * 0.9)) scale(0.8); transition: transform 800ms cubic-bezier(0.2, 0.85, 0.2, 1), opacity 600ms ease; }
+.gs-item::after { content: ""; position: absolute; inset: 0; background: rgba(255, 250, 243, 0.7); transition: opacity 600ms ease; pointer-events: none; }
+.gs-item[data-mid] { z-index: 2; transform: translateX(-50%) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 800ms cubic-bezier(0.2, 0.85, 0.2, 1); box-shadow: 0 60px 90px -50px rgba(29, 23, 18, 0.8); }
+.gs-item[data-mid]::after { opacity: 0; }
+.gs-item[data-far] { opacity: 0; pointer-events: none; }
+.gs-item video, .gs-item img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.gs-item button { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
+.gs-item:not([data-mid]):hover::after { opacity: 0.35; }
+.gs-wipe { animation: gs-wipe 760ms cubic-bezier(0.7, 0, 0.2, 1) both; }
+@keyframes gs-wipe { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0 0 0 0); } }
+.gs-label { position: absolute; left: clamp(12px, 2.2vw, 32px); bottom: clamp(12px, 2.2vw, 32px); max-width: 70%; padding: clamp(10px, 1.4vw, 18px) clamp(14px, 2vw, 26px);
+  background: #fff; box-shadow: 0 20px 40px -24px rgba(29, 23, 18, 0.6); animation: gs-label 700ms 250ms cubic-bezier(0.2, 0.85, 0.2, 1) both; }
+@keyframes gs-label { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: none; } }
+.gs-award { margin: 0 0 4px; font-family: var(--font-display); font-weight: 700; font-size: clamp(11px, 1vw, 14px); color: #c8561b; }
+.gs-name { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(22px, 3.4vw, 52px); line-height: 1; letter-spacing: -0.025em; color: var(--st-ink); }
+.gs-by { margin: 6px 0 0; font-size: clamp(12px, 1.1vw, 16px); color: var(--st-sub); }
+.gs-strip { display: flex; align-items: center; justify-content: center; gap: clamp(10px, 1.6vw, 20px); margin: clamp(28px, 3.4vw, 44px) auto 0; padding: 0 16px; }
+.gs-frames { display: flex; gap: clamp(6px, 0.8vw, 10px); }
+.gs-frame { position: relative; width: clamp(54px, 8.4vw, 128px); aspect-ratio: 16 / 9; padding: 0; border: 0; background: var(--st-dark); cursor: pointer;
+  opacity: 0.5; transition: opacity 250ms ease, transform 250ms ease; }
+.gs-frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.gs-frame:hover { opacity: 0.85; transform: translateY(-3px); }
+.gs-frame[aria-current] { opacity: 1; transform: translateY(-4px); box-shadow: 0 16px 24px -16px rgba(29, 23, 18, 0.7); }
+.gs-bar { position: absolute; left: 0; right: 0; bottom: -8px; height: 3px; background: var(--st-line); }
+.gs-bar::before { content: ""; position: absolute; inset: 0; background: #c8561b; transform-origin: left; transform: scaleX(0); }
+.gs-frame[aria-current] .gs-bar::before { transform: scaleX(var(--p, 0)); transition: transform 260ms linear; }
+.gs button:focus-visible { outline: 2px solid #e07a1f; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .gs-item, .gs-frame { transition: none; } .gs-wipe, .gs-label { animation: none; } }
 
-/* caption: name and maker; slides up when the work changes */
-.afo-cap { width: var(--w); margin: 34px auto 0; min-height: 72px; display: flex; justify-content: center; }
+/* caption (All for One): name and maker; slides up when the work changes */
+.afo-cap { margin: 30px auto 0; padding: 0 16px; min-height: 72px; display: flex; justify-content: center; }
 .afo-cap-in { text-align: center; animation: afo-in 600ms cubic-bezier(0.2, 0.85, 0.2, 1) both; }
 @keyframes afo-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 .afo-name { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(22px, 2.4vw, 32px); line-height: 1.15; }
 .afo-by { margin: 4px 0 0; color: var(--st-sub); font-size: 16px; }
 .afo-by b { color: var(--st-link); font-weight: 600; }
 
-/* one bar per work; the current one fills as its clip plays */
-.afo-ctl { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 18px; }
-.afo-dots { display: flex; gap: 6px; }
-.afo-dots button { position: relative; width: clamp(28px, 3.4vw, 44px); height: 4px; padding: 0; border: 0; background: var(--st-line);
-  cursor: pointer; overflow: visible; }
-.afo-dots button::before { content: ""; position: absolute; inset: 0; background: var(--st-ink); transform-origin: left;
-  transform: scaleX(0); }
-.afo-dots button[data-done]::before { transform: scaleX(1); }
-.afo-dots button[aria-current]::before { transform: scaleX(var(--p, 0)); transition: transform 260ms linear; background: #c8561b; }
-.afo-dots button[data-mock]::before { animation: afo-fill 4s linear both; }
-.afo-dots button[data-mock][data-paused]::before { animation-play-state: paused; }
-@keyframes afo-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-.afo-dots button::after { content: ""; position: absolute; inset: -20px -3px; } /* 44px tap area */
+.afo-ctl { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 16px; }
 .afo-play { display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 0; background: #fff; color: var(--st-ink);
   box-shadow: inset 0 0 0 1px var(--st-line); cursor: pointer; }
 .afo-play:hover { box-shadow: inset 0 0 0 1.5px var(--st-ink); }
 .afo-play svg { width: 14px; height: 14px; }
-.afo button:focus-visible { outline: 2px solid #e07a1f; outline-offset: 3px; }
+.bs button:focus-visible { outline: 2px solid #e07a1f; outline-offset: 3px; }
 
 /* All for One is a smaller event than Thailand Game Show (owner, 28 พ.ย.) */
 .mp-small .mp-h { font-size: clamp(28px, 3.6vw, 46px); }
-.mp-small .afo { --w: min(720px, 56vw); }
-@media (max-width: 720px) { .mp-small .afo { --w: 70vw; } }
 
-/* All for One as a bookshelf (components/map/BookShelf.tsx) */
-.bs { --R: calc(var(--P) * 0.5); --P: min(300px, 25vw); --H: calc(var(--P) * 1.32); --S: calc(var(--P) * 0.16); --G: 8px; }
-/* --R: half the width the book takes (one page closed, two open), so the spines hug it */
-.bs[data-open] { --R: var(--P); }
-@media (max-width: 720px) { .bs { --P: 41vw; --S: 7.5vw; --G: 5px; } }
-.bs-shelf { position: relative; height: calc(var(--H) + 36px); overflow-x: clip; overflow-y: visible; perspective: 1800px; }
-.bs-spine, .bs-book { position: absolute; bottom: 24px; left: 50%; transition: transform 760ms cubic-bezier(0.2, 0.85, 0.2, 1); }
-.bs-spine { width: var(--S); height: calc(var(--H) * var(--h)); padding: 0; border: 0; background: var(--c); color: #fff; cursor: pointer;
-  transform: translateX(calc(var(--side) * (var(--R) + var(--G) + var(--n) * (var(--S) + var(--G))) - var(--neg) * var(--S)));
-  box-shadow: 0 18px 24px -18px rgba(29, 23, 18, 0.55), inset -3px 0 0 rgba(0, 0, 0, 0.08); display: grid; place-items: center; overflow: hidden; }
+/* All for One as a bookshelf (components/map/BookShelf.tsx): spines on a shelf, the chosen book faces out */
+.bs { --CW: min(600px, 46vw); --CH: calc(var(--CW) * 9 / 16); --S: min(40px, 3.2vw); --G: 4px; }
+@media (max-width: 720px) { .bs { --CW: 70vw; --S: 6vw; --G: 3px; } }
+.bs-shelf { position: relative; height: calc(var(--CH) * 1.12 + 30px); overflow-x: clip; overflow-y: visible; perspective: 1600px; }
+.bs-spine, .bs-book { position: absolute; bottom: 22px; left: 50%; transition: transform 720ms cubic-bezier(0.2, 0.85, 0.2, 1); }
+.bs-spine { width: calc(var(--S) * var(--t)); height: calc(var(--CH) * var(--h)); padding: 0; border: 0; background: var(--c); color: #fff; cursor: pointer;
+  transform: translateX(calc(var(--side) * (var(--CW) / 2 + var(--G) * 3 + var(--x) * (var(--S) + var(--G))) - var(--neg) * var(--t) * var(--S)));
+  box-shadow: 0 18px 22px -18px rgba(29, 23, 18, 0.6), inset -4px 0 0 rgba(0, 0, 0, 0.1), inset 3px 0 0 rgba(255, 255, 255, 0.12);
+  display: grid; place-items: center; overflow: hidden; }
 .bs-spine[data-light] { color: var(--st-ink); }
 .bs-spine span { writing-mode: vertical-rl; transform: rotate(180deg); font-family: var(--font-display); font-weight: 700;
-  font-size: clamp(11px, 1.1vw, 15px); white-space: nowrap; letter-spacing: 0.02em; }
-.bs-spine:hover { transform: translateX(calc(var(--side) * (var(--R) + var(--G) + var(--n) * (var(--S) + var(--G))) - var(--neg) * var(--S))) translateY(-10px); }
+  font-size: clamp(9px, 0.95vw, 13px); white-space: nowrap; letter-spacing: 0.04em; text-transform: uppercase; }
+.bs-spine:hover { translate: 0 -12px; }
+.bs-spine { transition: transform 720ms cubic-bezier(0.2, 0.85, 0.2, 1), translate 200ms ease; }
 .bs-spine:focus-visible { outline: 2px solid #e07a1f; outline-offset: 3px; }
-/* the book in the middle: 2 pages wide; closed it shifts half a page so the cover sits in the middle */
-.bs-book { width: calc(var(--P) * 2); height: var(--H); transform: translateX(calc(var(--P) * -1.5)); }
-.bs[data-open] .bs-book { transform: translateX(calc(var(--P) * -1)); }
-.bs-inner { position: absolute; inset: 0; transform-style: preserve-3d; animation: bs-in 700ms cubic-bezier(0.2, 0.85, 0.2, 1) both; }
-@keyframes bs-in { from { opacity: 0; transform: translateY(18px) rotateY(-60deg); } to { opacity: 1; transform: none; } }
-.bs-page { position: absolute; left: var(--P); top: 0; width: var(--P); height: 100%; background: #fffdf8; display: grid; place-items: center;
-  padding: 0 clamp(8px, 1.2vw, 16px); box-sizing: border-box; box-shadow: 0 26px 40px -26px rgba(29, 23, 18, 0.6), inset 14px 0 18px -14px rgba(29, 23, 18, 0.25); }
-.bs-page video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--st-dark); }
-.bs-soon { width: 100%; aspect-ratio: 16 / 9; background: #1167dc; display: grid; place-items: center; align-content: center; gap: 8px; }
-.bs-soon img { width: 52%; }
-.bs-soon span { font-family: var(--font-display); font-weight: 700; font-size: 13px; color: #ffd84d; }
-.bs-cover { position: absolute; left: var(--P); top: 0; width: var(--P); height: 100%; transform-origin: left center; transform-style: preserve-3d;
-  transition: transform 1000ms cubic-bezier(0.45, 0.05, 0.2, 1); }
-.bs[data-open] .bs-cover { transform: rotateY(-180deg); }
-.bs-front, .bs-back { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column;
-  padding: clamp(12px, 1.8vw, 24px); box-sizing: border-box; }
-.bs-front { background: #1167dc; color: #fff; box-shadow: 0 26px 40px -26px rgba(29, 23, 18, 0.6), inset 6px 0 0 rgba(0, 0, 0, 0.12); }
-.bs-front img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
-.bs-front .bs-logo { aspect-ratio: auto; width: 80%; margin: 18% auto 0; object-fit: contain; }
-.bs-back { transform: rotateY(180deg); background: #fffdf8; color: var(--st-ink); justify-content: center;
-  box-shadow: 0 26px 40px -26px rgba(29, 23, 18, 0.6), inset -14px 0 18px -14px rgba(29, 23, 18, 0.25); }
-.bs-ev { margin: auto 0 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(10px, 1vw, 13px); color: #ffd84d; }
-.bs-back .bs-ev { margin: 0; color: #1167dc; }
-.bs-t { margin: 6px 0 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(15px, 2vw, 28px); line-height: 1.1; }
-.bs-by { margin: 8px 0 0; font-size: clamp(12px, 1.1vw, 15px); color: var(--st-sub); }
-.bs-by b { color: var(--st-link); }
-@media (prefers-reduced-motion: reduce) { .bs-spine, .bs-book, .bs-cover { transition: none; } .bs-inner { animation: none; } }
+.bs-book { width: var(--CW); height: var(--CH); transform: translateX(-50%); perspective: 1200px; }
+.bs-cover { position: absolute; inset: 0; overflow: hidden; background: #1d1712; animation: bs-face 760ms cubic-bezier(0.2, 0.85, 0.2, 1) both;
+  box-shadow: 0 40px 60px -34px rgba(29, 23, 18, 0.75), inset 8px 0 0 rgba(0, 0, 0, 0.18); }
+@keyframes bs-face { from { transform: rotateY(-78deg) scale(0.9); opacity: 0.4; } to { transform: none; opacity: 1; } }
+.bs-cover video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.bs-cover[data-mock] { background: #1167dc; display: grid; place-items: center; }
+.bs-logo { width: 58%; margin-bottom: 12%; }
+/* a square label on the cover, like the camp banner's track labels */
+.bs-label { position: absolute; left: 0; bottom: 0; max-width: 86%; padding: 10px 16px 12px; background: #fff; }
+.bs-ev { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(10px, 0.95vw, 13px); color: #1167dc; }
+.bs-t { margin: 2px 0 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(16px, 1.8vw, 24px); line-height: 1.1; color: var(--st-ink); }
+@media (max-width: 720px) {
+  .bs-label { padding: 5px 9px 6px; max-width: 70%; }
+  .bs-ev { font-size: 8px; }
+  .bs-t { font-size: 13px; }
+  .gs-label { padding: 7px 11px; }
+  .gs-name { font-size: 20px; }
+}
+@media (prefers-reduced-motion: reduce) { .bs-spine, .bs-book { transition: none; } .bs-cover { animation: none; } }
 
 /* the last section before the legacy page */
 .mp > .mp-sec:last-child { padding-bottom: clamp(40px, 5vw, 72px); }
@@ -148,12 +144,8 @@
 }
 .camp a:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 
-/* All for One stand-ins until the team sends the works */
-.afo-mock { position: relative; display: grid; place-items: center; align-content: center; gap: 14px; width: 100%; height: 100%; background: #1167dc; }
-.afo-mock img { width: 38%; max-height: 62%; height: auto !important; object-fit: contain !important; }
-.afo-mock span { font-family: var(--font-display); font-weight: 700; font-size: clamp(14px, 1.4vw, 18px); color: #ffd84d; }
 
-@media (prefers-reduced-motion: reduce) { .afo-item { transition: none; } .afo-cap-in { animation: none; } .afo-dots button::before { transition: none; animation: none; } }
+@media (prefers-reduced-motion: reduce) { .afo-cap-in { animation: none; } }
 
 /* the closing section ("สร้างอนาคตไปด้วยกัน") in the site's light colours too: the owner asked for no dark blocks on home.
    The theme layer outranks the legacy layer's own !important rules. */
@@ -165,5 +157,14 @@
   [data-view="home"] section.end .end-in { background: transparent !important; box-shadow: none !important; }
   [data-view="home"] section.end h2 { color: var(--st-ink) !important; text-shadow: none !important; }
   [data-view="home"] section.end p { color: var(--st-sub) !important; }
-  [data-view="home"] section.end a.e1 { color: var(--st-ink) !important; }
+  /* owner, 28 พ.ย.: "ดู Hams Route" is the most prominent button on the page: big, orange, first */
+  [data-view="home"] section.end .end-b .e1 { order: -2; min-height: 68px !important; padding: 0 40px !important; gap: 14px;
+    background: #c8561b !important; color: #fff !important; font-size: 1.35rem !important; font-weight: 700 !important; text-decoration: none !important;
+    box-shadow: 0 26px 40px -22px rgba(200, 86, 27, 0.75) !important; transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease; }
+  [data-view="home"] section.end .end-b .e1::after { content: "→"; font-weight: 700; transition: transform 200ms ease; }
+  [data-view="home"] section.end .end-b .e1:hover { background: #1d1712 !important; transform: translateY(-3px);
+    box-shadow: 0 30px 44px -22px rgba(29, 23, 18, 0.7) !important; }
+  [data-view="home"] section.end .end-b .e1:hover::after { transform: translateX(5px); }
+  [data-view="home"] section.end .end-b .e1:focus-visible { outline: 3px solid #ffd84d; outline-offset: 3px; }
+  [data-view="home"] section.end .end-b { align-items: center !important; }
 }

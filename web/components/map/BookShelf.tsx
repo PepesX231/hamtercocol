@@ -6,32 +6,31 @@ import { img } from "@/lib/site";
 
 /*
  * All for One as a bookshelf (owner, 28 พ.ย., from a Pinterest "personal curation" shelf): every work is a book.
- * The others stand as spines on the shelf; the chosen one slides to the middle, shows its cover
- * ("All for One University 2026" and the work), then opens: the cover turns over to the left page (name, maker)
- * and the clip plays on the right page. Kept small on purpose: All for One is a smaller event than Thailand Game Show.
- * It moves on by itself after the clip (or a few seconds for a mock), stops off screen, can be paused,
+ * The others stand as spines on the shelf; the chosen one slides to the middle and turns to face out, its cover
+ * filled with the work (the clip plays on it) and a small label: "All for One University 2026" and the name.
+ * Owner, 28 พ.ย. (2nd pass): the work full on the cover instead of an opening book, and a full shelf (mocks for now).
+ * Smaller than Thailand Game Show on purpose. It moves on by itself, stops off screen, can be paused,
  * and stays still for reduced-motion users.
  */
-const SPINE = ["#1167dc", "#ffd84d", "#c8561b", "#1d1712", "#7aa7f0", "#e8dccb"];
-const LIGHT = new Set(["#ffd84d", "#7aa7f0", "#e8dccb"]);
-const TALL = [0.92, 0.84, 1, 0.88, 0.95, 0.8];
+const SPINE = ["#1167dc", "#ffd84d", "#c8561b", "#1d1712", "#7aa7f0", "#e8dccb", "#f29a4a", "#2b4fa8", "#f4ead9", "#8c3d12"];
+const LIGHT = new Set(["#ffd84d", "#7aa7f0", "#e8dccb", "#f29a4a", "#f4ead9"]);
+const TALL = [0.96, 0.86, 1.04, 0.9, 1, 0.82, 0.94, 1.08, 0.88, 0.98];
+const THICK = [1, 0.8, 1.25, 0.9, 1.1, 0.75, 1, 1.35, 0.85, 1.05];
 const EVENT = "All for One University 2026";
 
 export function BookShelf({ works }: { works: Work[] }) {
   const n = works.length;
-  const [at, setAt] = useState(0);
-  const [open, setOpen] = useState(false);
+  const first = Math.max(0, works.findIndex((w) => !w.mock));
+  const [at, setAt] = useState(first);
   const [paused, setPaused] = useState(false);
   const [seen, setSeen] = useState(false);
   const box = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
-  const still = useRef(false);
 
-  const go = useCallback((i: number) => { setAt(((i % n) + n) % n); setOpen(false); }, [n]);
+  const go = useCallback((i: number) => setAt(((i % n) + n) % n), [n]);
 
   useEffect(() => {
-    still.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (still.current) setPaused(true);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setPaused(true);
     const io = new IntersectionObserver(([e]) => setSeen(e.isIntersecting), { threshold: 0.35 });
     if (box.current) io.observe(box.current);
     return () => io.disconnect();
@@ -47,37 +46,33 @@ export function BookShelf({ works }: { works: Work[] }) {
     return () => window.removeEventListener("hh-show", show);
   }, [works, go]);
 
-  // the book in the middle shows its cover first, then opens
-  useEffect(() => {
-    if (open || !seen) return;
-    const t = setTimeout(() => setOpen(true), still.current ? 0 : 900);
-    return () => clearTimeout(t);
-  }, [at, open, seen]);
-
-  // clip plays once the book is open; a mock (no clip) stays open a few seconds
+  // the clip on the cover plays once; a mock cover stays a few seconds
   const w = works[at];
   useEffect(() => {
     const v = video.current;
-    if (v) {
-      if (open && seen && !paused) { v.currentTime = 0; v.play().catch(() => {}); } else v.pause();
-    }
-    if (!w.clip && open && seen && !paused && n > 1) {
-      const t = setTimeout(() => go(at + 1), 3500);
+    if (v) { if (seen && !paused) { v.currentTime = 0; v.play().catch(() => {}); } else v.pause(); }
+    if (!w.clip && seen && !paused && n > 1) {
+      const t = setTimeout(() => go(at + 1), 2600);
       return () => clearTimeout(t);
     }
-  }, [open, seen, paused, at, w, n, go]);
+  }, [seen, paused, at, w, n, go]);
+
+  // how many spine-widths sit between a spine and the cover (spines have different thicknesses)
+  const off = (k: number) => {
+    let x = 0;
+    if (k < at) for (let j = k + 1; j < at; j++) x += THICK[j % THICK.length];
+    else for (let j = at + 1; j < k; j++) x += THICK[j % THICK.length];
+    return x;
+  };
 
   return (
-    <div ref={box} className="bs" data-open={open || undefined}>
+    <div ref={box} className="bs">
       <div className="bs-shelf">
         {works.map((item, k) => {
-          const d = k - at;
-          if (d === 0) {
+          if (k === at) {
             return (
               <div key={item.id} className="bs-book">
-                <div className="bs-inner">
-                {/* right page: the clip, uncovered when the cover turns over to the left */}
-                <div className="bs-page">
+                <div className="bs-cover" data-mock={item.mock || undefined}>
                   {item.clip ? (
                     <video
                       ref={video}
@@ -91,36 +86,31 @@ export function BookShelf({ works }: { works: Work[] }) {
                       aria-label={`คลิป ${item.name} โดย ${item.by}`}
                     />
                   ) : (
-                    <div className="bs-soon"><img src={img("k-afo-logo.webp")} alt="" /><span>เร็วๆ นี้</span></div>
+                    <img className="bs-logo" src={img("k-afo-logo.webp")} alt="" />
                   )}
-                </div>
-                <div className="bs-cover">
-                  <div className="bs-front">
-                    {item.poster ? <img src={item.poster} alt="" /> : <img className="bs-logo" src={img("k-afo-logo.webp")} alt="" />}
+                  <div className="bs-label">
                     <p className="bs-ev">{EVENT}</p>
                     <p className="bs-t">{item.name}</p>
                   </div>
-                  <div className="bs-back">
-                    <p className="bs-ev">{EVENT}</p>
-                    <p className="bs-t">{item.name}</p>
-                    <p className="bs-by">{item.by}{item.award ? <><br /><b>{item.award}</b></> : null}</p>
-                  </div>
-                </div>
                 </div>
               </div>
             );
           }
+          const c = SPINE[k % SPINE.length];
           return (
             <button
               key={item.id}
               type="button"
               className="bs-spine"
               onClick={() => go(k)}
-              aria-label={`เปิด ${item.name}`}
-              data-light={LIGHT.has(SPINE[k % SPINE.length]) || undefined}
-              style={{ "--side": d < 0 ? -1 : 1, "--neg": d < 0 ? 1 : 0, "--n": Math.abs(d) - 1, "--c": SPINE[k % SPINE.length], "--h": TALL[k % TALL.length] } as React.CSSProperties}
+              aria-label={`ดู ${item.name}`}
+              data-light={LIGHT.has(c) || undefined}
+              style={{
+                "--side": k < at ? -1 : 1, "--neg": k < at ? 1 : 0, "--x": off(k),
+                "--c": c, "--h": TALL[k % TALL.length], "--t": THICK[k % THICK.length],
+              } as React.CSSProperties}
             >
-              <span>{item.mock ? "เร็วๆ นี้" : item.name}</span>
+              <span>{item.mock ? "All for One" : item.name}</span>
             </button>
           );
         })}
