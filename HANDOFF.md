@@ -114,9 +114,9 @@ To add words, extend `INTENTS` in `lib/understand.ts`, then run `harness.js`. Th
 2. **Thailand Game Show**: clip row starting with RE//SLASH.
 3. **All for One**: clip row of All for One University works (only SmartParkin' so far; more from the team).
 4. **เข้าร่วมกับ Hamster Hub**: Portfolio Camp card.
-5. Packages shelf.
-6. กิจกรรมล่าสุด, จัดกิจกรรมร่วมกับ, รุ่นพี่ติดมหาลัย (moved down), สร้างอนาคตไปด้วยกัน (light), footer.
-- **Removed from home:** Hall of Fame (the awards list stays on /works/), "สิ่งที่ Hamster Hub สร้าง", the Route shelf (Routes stay on /routes/).
+5. กิจกรรมล่าสุด, จัดกิจกรรมร่วมกับ, "รุ่นพี่ปี 69 ติดมหาลัยแล้ว 48 คน" (moved down), สร้างอนาคตไปด้วยกัน (light), footer.
+- **Removed from home:** Hall of Fame (the awards list stays on /works/), "สิ่งที่ Hamster Hub สร้าง", the Route shelf (Routes stay on /routes/), and for now the Packages shelf (28 พ.ย.; `components/HomeStore.tsx` is kept).
+- The map's "i" (data credits) button is hidden on the site; the footer links "เครดิตแผนที่" to `map-app/credits.txt` (CC BY needs the credit). The map's top and bottom edges fade out so zoomed-in land never stops on a line.
 
 **Hams Route (`/routes/`):**
 - Apple Store–style header: name on the left, mascot in the middle, question on the right.

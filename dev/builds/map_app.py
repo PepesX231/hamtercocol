@@ -66,6 +66,13 @@ def main():
         if os.path.exists(clip) and f"projects/{folder}/video.mp4" not in data:
             os.remove(clip)
 
+    # The map repo's credits end with a note for its demo build ("students ... are fictional samples"), which is not
+    # true of this build. Keep only the data credits. The site's footer links here ("เครดิตแผนที่").
+    credits = os.path.join(tmp, "credits.txt")
+    if os.path.exists(credits):
+        lines = open(credits, encoding="utf-8").read().splitlines()
+        open(credits, "w", encoding="utf-8").write("\n".join(l for l in lines if "fictional" not in l) + "\n")
+
     shutil.rmtree(OUT, ignore_errors=True)
     shutil.copytree(tmp, OUT)
     shutil.rmtree(tmp)
